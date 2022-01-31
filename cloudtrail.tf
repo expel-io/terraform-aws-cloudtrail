@@ -7,22 +7,17 @@ resource "aws_cloudtrail" "cloudtrail" {
     read_write_type           = "All"
   }
 
-  tags = merge(
-    var.tags,
-    {}
-  )
+  tags = local.tags
 
   depends_on = [aws_s3_bucket_policy.cloudtrail_bucket_policy]
 }
 
+// TODO: Encrypt data
 resource "aws_s3_bucket" "cloudtrail_bucket" {
   bucket = "${var.prefix}-bucket"
   acl    = "private"
 
-  tags = merge(
-    var.tags,
-    {}
-  )
+  tags = local.tags
 }
 
 resource "aws_s3_bucket_public_access_block" "cloudtrail_bucket_public_access_block" {
