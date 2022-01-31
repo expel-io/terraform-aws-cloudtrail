@@ -8,6 +8,12 @@ variable "expel_customer_organization_guid" {
   type        = string
 }
 
+variable "expel_assume_role_session_name" {
+  description = "The session name Expel will use when authenticating"
+  type        = string
+  default     = "ExpelCloudTrailServiceSession"
+}
+
 variable "prefix" {
   // TODO enforce max length with a validator - should not exceed bucket (63), cloudtrail and sqs max length (80)
   description = "A prefix to group all Expel integration resources."
@@ -15,11 +21,8 @@ variable "prefix" {
 }
 
 variable "tags" {
-  // TODO merge Expel's default tags into variable `tags`
   description = "A set of tags to group resources"
-  default = {
-    "vendor" : "expel"
-  }
+  default     = {}
 }
 
 variable "queue_message_retention_days" {

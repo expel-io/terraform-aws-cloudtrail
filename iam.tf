@@ -66,6 +66,8 @@ data "aws_iam_policy_document" "assume_role_iam_document" {
 resource "aws_iam_role" "expel_assume_role" {
   name               = "ExpelServiceAssumeRole"
   assume_role_policy = data.aws_iam_policy_document.assume_role_iam_document.json
+
+  tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "cloudtrail_manager_role_policy_attachment" {
@@ -74,7 +76,10 @@ resource "aws_iam_role_policy_attachment" "cloudtrail_manager_role_policy_attach
 }
 
 resource "aws_iam_policy" "cloudtrail_manager_iam_policy" {
+  name   = "${var.prefix}-cloudtrail-manager-policy"
   policy = data.aws_iam_policy_document.cloudtrail_manager_iam_document.json
+
+  tags = local.tags
 }
 
 data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
