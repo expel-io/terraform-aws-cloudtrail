@@ -21,11 +21,8 @@ variable "prefix" {
 }
 
 variable "tags" {
-  // TODO merge Expel's default tags into variable `tags`
   description = "A set of tags to group resources"
-  default = {
-    "vendor" : "expel"
-  }
+  default     = {}
 }
 
 variable "queue_message_retention_days" {
