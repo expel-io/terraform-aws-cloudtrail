@@ -49,4 +49,3 @@ resource "aws_kms_key" "cloudtrail_bucket_encryption_key" {
   description = "This key is used to encrypt cloudtrail_bucket objects"
   tags        = local.tags
 }
-
