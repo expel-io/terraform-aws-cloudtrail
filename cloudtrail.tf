@@ -14,8 +14,8 @@ resource "aws_cloudtrail" "cloudtrail" {
 
 // TODO: Encrypt data
 resource "aws_s3_bucket" "cloudtrail_bucket" {
-  bucket = "${var.prefix}-bucket"
-  acl    = "private"
+  bucket_prefix = var.prefix
+  acl           = "private"
 
   tags = local.tags
 }
