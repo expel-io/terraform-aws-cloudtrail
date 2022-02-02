@@ -15,9 +15,14 @@ variable "expel_assume_role_session_name" {
 }
 
 variable "prefix" {
-  // TODO enforce max length with a validator - should not exceed bucket (63), cloudtrail and sqs max length (80)
   description = "A prefix to group all Expel integration resources."
+  type        = string
   default     = "expel-aws-integration"
+
+  validation {
+    condition     = length(var.prefix) <= 37
+    error_message = "Prefix value must be 37 characters or less."
+  }
 }
 
 variable "tags" {
