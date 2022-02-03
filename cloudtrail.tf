@@ -54,7 +54,7 @@ resource "aws_s3_bucket_notification" "cloudtrail_bucket_notification" {
   bucket = aws_s3_bucket.cloudtrail_bucket.id
 
   queue {
-    queue_arn     = aws_sqs_queue.cloudtrail_queue.arn
-    events        = ["s3:ObjectCreated:*"]
+    queue_arn = aws_sqs_queue.cloudtrail_queue.arn
+    events    = ["s3:ObjectCreated:*"]
   }
 }
