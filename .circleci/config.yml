@@ -1,0 +1,17 @@
+---
+version: 2.1
+
+workflows:
+  validate:
+    jobs:
+      - lint
+
+jobs:
+  lint:
+    docker:
+      - image: ghcr.io/terraform-linters/tflint:v0.34.1
+    steps:
+      - checkout
+      - run:
+          name: lint terraform resources
+          command: tflint .
