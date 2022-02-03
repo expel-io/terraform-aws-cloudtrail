@@ -34,6 +34,13 @@ resource "aws_s3_bucket" "cloudtrail_bucket" {
   tags = local.tags
 }
 
+resource "aws_kms_key" "cloudtrail_bucket_encryption_key" {
+  count = var.enable_s3_encryption ? 1 : 0
+
+  description = "This key is used to encrypt cloudtrail_bucket objects"
+  tags        = local.tags
+}
+
 resource "aws_s3_bucket_public_access_block" "cloudtrail_bucket_public_access_block" {
   bucket = aws_s3_bucket.cloudtrail_bucket.id
 
@@ -43,9 +50,11 @@ resource "aws_s3_bucket_public_access_block" "cloudtrail_bucket_public_access_bl
   restrict_public_buckets = true
 }
 
-resource "aws_kms_key" "cloudtrail_bucket_encryption_key" {
-  count = var.enable_s3_encryption ? 1 : 0
+resource "aws_s3_bucket_notification" "cloudtrail_bucket_notification" {
+  bucket = aws_s3_bucket.cloudtrail_bucket.id
 
-  description = "This key is used to encrypt cloudtrail_bucket objects"
-  tags        = local.tags
+  queue {
+    queue_arn     = aws_sqs_queue.cloudtrail_queue.arn
+    events        = ["s3:ObjectCreated:*"]
+  }
 }
