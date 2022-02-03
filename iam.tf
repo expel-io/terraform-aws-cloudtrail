@@ -99,9 +99,35 @@ data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
     effect    = "Allow"
   }
 
-  // Possibly required? 
   statement {
-    actions   = ["ec2:DescribeInstances"]
+    actions = [
+      "cloudtrail:DescribeTrails",
+      "cloudtrail:GetTrailStatus",
+      "config:GetDiscoveredResourceCounts",
+      "config:ListDiscoveredResources",
+      "ec2:DescribeInstances",
+      "ec2:DescribeRegions",
+      "ec2:DescribeSecurityGroups",
+      "ec2:DescribeVolumes",
+      "ecs:DescribeClusters",
+      "ecs:DescribeContainerInstances",
+      "ecs:DescribeTaskDefinition",
+      "ecs:ListClusters",
+      "ecs:ListContainerInstances",
+      "ecs:ListTaskDefinitions",
+      "eks:DescribeCluster",
+      "eks:ListClusters",
+      "iam:Get*",
+      "iam:List*",
+      "lambda:GetFunction",
+      "lambda:ListFunctions",
+      "lightsail:GetInstances",
+      "lightsail:GetRegions",
+      "organizations:ListAccounts",
+      "rds:DescribeDBInstances",
+      "rds:ListTagsForResource",
+      "s3:ListAllMyBuckets"
+    ]
     resources = ["*"]
     effect    = "Allow"
   }
