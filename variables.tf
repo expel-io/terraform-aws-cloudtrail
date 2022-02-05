@@ -26,6 +26,12 @@ variable "enable_s3_encryption" {
   default     = true
 }
 
+variable "enable_sqs_encryption" {
+  description = "Enable server-side encryption (SSE) of message content with SQS-owned encryption keys."
+  type        = bool
+  default     = true
+}
+
 variable "prefix" {
   description = "A prefix to group all Expel integration resources."
   type        = string
@@ -46,10 +52,4 @@ variable "queue_message_retention_days" {
   description = "The visibility timeout for the queue. See: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html"
   type        = number
   default     = 7
-}
-
-variable "sqs_managed_sse_enabled" {
-  description = "Enable server-side encryption (SSE) of message content with SQS-owned encryption keys."
-  type        = bool
-  default     = true
 }
