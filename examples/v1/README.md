@@ -1,8 +1,8 @@
 # V1
 
-This configuration sets up appropriate AWS resources necessary to connect Expel's Workbench with a new AWS CloudTrail instance
+This configuration sets up appropriate AWS resources that are necessary to integrate Expel's Workbench with a new AWS CloudTrail instance.
 
-V1 is the simplest onboarding experience, as it assumes a single AWS Account is being onboarded with no pre-existing CloudTrail entity
+V1 is the simplest onboarding experience, as it assumes a single AWS Account is being onboarded with a new CloudTrail entity.
 
 ## Usage
 
@@ -22,13 +22,3 @@ Note that this example may create resources which can cost money (AWS Elastic IP
 |------|---------|
 | terraform | = 1.1.3 |
 | aws | = 3.71 |
-
-## Inputs
-
-No inputs.
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| sqs_url | URL of the SQS queue used to notify Expel of new objects being inserted into CloudTrail's S3 bucket |
