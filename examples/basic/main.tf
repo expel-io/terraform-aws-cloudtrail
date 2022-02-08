@@ -13,18 +13,24 @@ variable "expel_customer_organization_guid" {
 }
 
 provider "aws" {
-  region = "${var.region}"
+  region = var.region
 }
 
 module "expel_aws_cloudtrail_integration" {
   source = "../../"
 
-  expel_aws_account_arn            = "${var.expel_aws_account_arn}"
-  expel_customer_organization_guid = "${var.expel_customer_organization_guid}"
-  expel_assume_role_session_name   = "ExpelServiceAssumeRoleForCloudTrailAccess"
-  enable_s3_encryption             = true
-  enable_sqs_encryption            = true
-  queue_message_retention_days     = 10
+  expel_aws_account_arn                   = var.expel_aws_account_arn
+  expel_customer_organization_guid        = var.expel_customer_organization_guid
+  expel_assume_role_session_name          = "ExpelServiceAssumeRoleForCloudTrailAccess"
+  queue_message_retention_days            = 10
+
+  enable_sqs_encryption                   = true
+  enable_cloudtrail_bucket_encryption     = true
+  enable_cloudtrail_log_file_validation   = true
+  enable_bucket_access_logging            = true
+  enable_access_logging_bucket_encryption = true
+  enable_bucket_versioning                = true
+  enable_bucket_encryption_key_rotation   = true
 
   prefix = "expel-cloudtrail-integration"
   tags = {
