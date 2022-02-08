@@ -82,6 +82,8 @@ resource "aws_iam_policy" "cloudtrail_manager_iam_policy" {
   tags = local.tags
 }
 
+# ignoring as these policies enable necessary observability on all AWS resources
+# tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
   statement {
     actions   = ["s3:GetObject"]
