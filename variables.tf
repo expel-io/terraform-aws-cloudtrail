@@ -20,20 +20,14 @@ variable "enable_organization_trail" {
   default     = false
 }
 
-variable "enable_s3_encryption" {
-  description = "When enabled, encrypts objects in the s3 bucket."
-  type        = bool
-  default     = true
-}
-
 variable "prefix" {
   description = "A prefix to group all Expel integration resources."
   type        = string
   default     = "expel-aws-integration"
 
   validation {
-    condition     = length(var.prefix) <= 37
-    error_message = "Prefix value must be 37 characters or less."
+    condition     = length(var.prefix) <= 32
+    error_message = "Prefix value must be 32 characters or less."
   }
 }
 
@@ -48,8 +42,44 @@ variable "queue_message_retention_days" {
   default     = 7
 }
 
-variable "sqs_managed_sse_enabled" {
+variable "enable_sqs_encryption" {
   description = "Enable server-side encryption (SSE) of message content with SQS-owned encryption keys."
+  type        = bool
+  default     = true
+}
+
+variable "enable_cloudtrail_bucket_encryption" {
+  description = "Enable to encrypt objects in the cloudtrail bucket."
+  type        = bool
+  default     = true
+}
+
+variable "enable_cloudtrail_log_file_validation" {
+  description = "Validates that a log file was not modified, deleted, or unchanged after CloudTrail delivered it."
+  type        = bool
+  default     = true
+}
+
+variable "enable_bucket_access_logging" {
+  description = "Access logging provides detailed records for the requests that are made to an Amazon S3 bucket."
+  type        = bool
+  default     = true
+}
+
+variable "enable_access_logging_bucket_encryption" {
+  description = "Enable to encrypt objects in the access logging bucket."
+  type        = bool
+  default     = true
+}
+
+variable "enable_bucket_versioning" {
+  description = "Enable to protect against accidental/malicious removal or modification of S3 objects."
+  type        = bool
+  default     = true
+}
+
+variable "enable_bucket_encryption_key_rotation" {
+  description = "If `enable_s3_encryption` is set to true, enabling key rotation will rotate the KMS keys used for S3 bucket encryption."
   type        = bool
   default     = true
 }
