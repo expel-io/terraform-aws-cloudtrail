@@ -1,17 +1,17 @@
-# V1
+# Basic
 
 This configuration sets up appropriate AWS resources that are necessary to integrate Expel's Workbench with a new AWS CloudTrail instance.
 
-V1 is the simplest onboarding experience, as it assumes a single AWS Account is being onboarded with a new CloudTrail entity.
+This `Basic` example is the simplest onboarding experience, as it assumes a single AWS Account is being onboarded with a new CloudTrail entity.
 
 ## Usage
+
 
 To run this example you need to execute:
 
 ```bash
-$ terraform init
-$ terraform plan
-$ terraform apply
+terraform init
+terraform apply
 ```
 
 Note that this example may create resources which can cost money (AWS Elastic IP, for example). Run `terraform destroy` when you don't need these resources.
