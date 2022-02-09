@@ -29,6 +29,8 @@ resource "aws_s3_bucket" "cloudtrail_bucket" {
     }
   }
 
+  depends_on = [aws_sqs_queue.cloudtrail_queue]
+
   tags = local.tags
 }
 
