@@ -1,66 +1,84 @@
+# temporarily ignoring because tfsec does not yet support AWS v4 configuration
+# tfsec:ignore:aws-s3-enable-bucket-encryption tfsec:ignore:aws-s3-encryption-customer-key tfsec:ignore:aws-s3-enable-bucket-logging tfsec:ignore:aws-s3-enable-versioning
 resource "aws_s3_bucket" "cloudtrail_bucket" {
   bucket_prefix = var.prefix
-  acl           = "private"
-
-  dynamic "server_side_encryption_configuration" {
-    for_each = var.enable_cloudtrail_bucket_encryption ? [aws_kms_key.cloudtrail_bucket_encryption_key[0]] : []
-
-    content {
-      rule {
-        apply_server_side_encryption_by_default {
-          kms_master_key_id = server_side_encryption_configuration.value.arn
-          sse_algorithm     = "aws:kms"
-        }
-      }
-    }
-  }
-
-  dynamic "logging" {
-    for_each = var.enable_bucket_access_logging ? [1] : []
-    content {
-      target_bucket = aws_s3_bucket.cloudtrail_access_log_bucket[0].id
-    }
-  }
-
-  dynamic "versioning" {
-    for_each = var.enable_bucket_versioning ? [1] : []
-    content {
-      enabled = true
-    }
-  }
 
   depends_on = [aws_sqs_queue.cloudtrail_queue]
 
   tags = local.tags
 }
 
+resource "aws_s3_bucket_acl" "cloudtrail_bucket_acl" {
+  bucket = aws_s3_bucket.cloudtrail_bucket.id
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_versioning" "cloudtrail_bucket_versioning" {
+  count = var.enable_bucket_versioning ? 1 : 0
+
+  bucket = aws_s3_bucket.cloudtrail_bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "cloudtrail_bucket_server_side_encryption_configuration" {
+  count  = var.enable_cloudtrail_bucket_encryption ? 1 : 0
+  bucket = aws_s3_bucket.cloudtrail_bucket.bucket
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.cloudtrail_bucket_encryption_key[0].arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+
+resource "aws_s3_bucket_logging" "cloudtrail_bucket_logging" {
+  count = var.enable_bucket_access_logging ? 1 : 0
+
+  bucket        = aws_s3_bucket.cloudtrail_bucket.id
+  target_bucket = aws_s3_bucket.cloudtrail_access_log_bucket[0].id
+
+  target_prefix = "log/"
+}
+
+# temporarily ignoring because tfsec does not yet support AWS v4 configuration
+# tfsec:ignore:aws-s3-enable-bucket-encryption tfsec:ignore:aws-s3-encryption-customer-key tfsec:ignore:aws-s3-enable-bucket-logging tfsec:ignore:aws-s3-enable-versioning
 resource "aws_s3_bucket" "cloudtrail_access_log_bucket" {
   count = var.enable_bucket_access_logging ? 1 : 0
 
   bucket_prefix = "${var.prefix}-logs"
-  acl           = "log-delivery-write"
-
-  dynamic "server_side_encryption_configuration" {
-    for_each = var.enable_access_logging_bucket_encryption ? [aws_kms_key.access_logging_bucket_encryption_key[0]] : []
-
-    content {
-      rule {
-        apply_server_side_encryption_by_default {
-          kms_master_key_id = server_side_encryption_configuration.value.arn
-          sse_algorithm     = "aws:kms"
-        }
-      }
-    }
-  }
-
-  dynamic "versioning" {
-    for_each = var.enable_bucket_versioning ? [1] : []
-    content {
-      enabled = true
-    }
-  }
 
   tags = local.tags
+}
+
+resource "aws_s3_bucket_acl" "cloudtrail_access_log_bucket_acl" {
+  count = var.enable_bucket_access_logging ? 1 : 0
+
+  bucket = aws_s3_bucket.cloudtrail_access_log_bucket[0].id
+  acl    = "log-delivery-write"
+}
+
+resource "aws_s3_bucket_versioning" "cloudtrail_access_log_bucket_versioning" {
+  count = var.enable_bucket_versioning ? 1 : 0
+
+  bucket = aws_s3_bucket.cloudtrail_access_log_bucket[0].id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "cloudtrail_access_log_bucket_server_side_encryption_configuration" {
+  count  = var.enable_access_logging_bucket_encryption ? 1 : 0
+  bucket = aws_s3_bucket.cloudtrail_access_log_bucket[0].bucket
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.access_logging_bucket_encryption_key[0].arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
 }
 
 resource "aws_kms_key" "cloudtrail_bucket_encryption_key" {
