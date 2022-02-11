@@ -23,7 +23,7 @@ resource "aws_s3_bucket_versioning" "cloudtrail_bucket_versioning" {
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "cloudtrail_bucket_server_side_encryption_configuration" {
-  count =  var.enable_cloudtrail_bucket_encryption ? 1 : 0
+  count  = var.enable_cloudtrail_bucket_encryption ? 1 : 0
   bucket = aws_s3_bucket.cloudtrail_bucket.bucket
 
   rule {
@@ -37,9 +37,9 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "cloudtrail_bucket
 resource "aws_s3_bucket_logging" "cloudtrail_bucket_logging" {
   count = var.enable_bucket_access_logging ? 1 : 0
 
-  bucket = aws_s3_bucket.cloudtrail_bucket.id
+  bucket        = aws_s3_bucket.cloudtrail_bucket.id
   target_bucket = aws_s3_bucket.cloudtrail_access_log_bucket[0].id
-  
+
   target_prefix = "log/"
 }
 
@@ -70,7 +70,7 @@ resource "aws_s3_bucket_versioning" "cloudtrail_access_log_bucket_versioning" {
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "cloudtrail_access_log_bucket_server_side_encryption_configuration" {
-  count =  var.enable_access_logging_bucket_encryption ? 1 : 0
+  count  = var.enable_access_logging_bucket_encryption ? 1 : 0
   bucket = aws_s3_bucket.cloudtrail_access_log_bucket[0].bucket
 
   rule {
