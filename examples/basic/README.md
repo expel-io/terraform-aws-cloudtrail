@@ -14,7 +14,7 @@ terraform init
 terraform apply -var-file="terraform.tfvars"
 ```
 
-Note that this example may create resources which can cost money (AWS Elastic IP, for example). Run `terraform destroy` when you don't need these resources.
+Note that this example may create resources which can cost money (AWS S3 bucket, for example). Run `terraform destroy` when you don't need these resources.
 
 ## Requirements
 
