@@ -21,4 +21,4 @@ Note that this example may create resources which can cost money (AWS Elastic IP
 | Name | Version |
 |------|---------|
 | terraform | = 1.1.3 |
-| aws | = 3.71 |
+| aws | = 4.0 |
