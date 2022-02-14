@@ -1,6 +1,18 @@
 # terraform-aws-expel-cloudtrail
 Terraform module for configuring an integration with Expel and AWS for CloudTrail analysis.
 
+## Usage
+```hcl
+module "expel_aws_cloudtrail_integration" {
+  source  = "expel-io/terraform-aws-expel-cloudtrail"
+  version = "1.0.0"
+
+  region                                  = "Replace with the AWS region of the account you're setting up"
+  expel_aws_account_arn                   = "Replace with Expel's AWS Account ARN"
+  expel_customer_organization_guid        = "Replace with your organization GUID provided by Expel"
+}
+```
+
 ## Requirements
 
 | Name | Version |
@@ -13,10 +25,6 @@ Terraform module for configuring an integration with Expel and AWS for CloudTrai
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0.0 |
-
-## Modules
-
-No modules.
 
 ## Resources
 
@@ -62,7 +70,7 @@ No modules.
 | <a name="input_enable_organization_trail"></a> [enable\_organization\_trail](#input\_enable\_organization\_trail) | When enabled, log events for the master account and all member accounts. | `bool` | `false` | no |
 | <a name="input_enable_sqs_encryption"></a> [enable\_sqs\_encryption](#input\_enable\_sqs\_encryption) | Enable server-side encryption (SSE) of message content with SQS-owned encryption keys. | `bool` | `true` | no |
 | <a name="input_expel_assume_role_session_name"></a> [expel\_assume\_role\_session\_name](#input\_expel\_assume\_role\_session\_name) | The session name Expel will use when authenticating. | `string` | `"ExpelCloudTrailServiceSession"` | no |
-| <a name="input_expel_aws_account_arn"></a> [expel\_aws\_account\_arn](#input\_expel\_aws\_account\_arn) | Expel's AWS Account ARN to allow assuming role to gain CloudTrail access. | `string` | n/a | yes |
+| <a name="input_expel_aws_account_arn"></a> [expel\_aws\_account\_arn](#input\_expel\_aws\_account\_arn) | Expel's AWS Account ARN to allow assuming role to gain CloudTrail access (this unique identifier will be provided to you by Expel). | `string` | n/a | yes |
 | <a name="input_expel_customer_organization_guid"></a> [expel\_customer\_organization\_guid](#input\_expel\_customer\_organization\_guid) | Expel customer's organization GUID (this unique identifier is assigned to you by Expel. You can find it in your browser URL after navigating to Settings > My Organization in Workbench). | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | A prefix to group all Expel integration resources. | `string` | `"expel-aws-integration"` | no |
 | <a name="input_queue_message_retention_days"></a> [queue\_message\_retention\_days](#input\_queue\_message\_retention\_days) | The visibility timeout for the queue. See: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html | `number` | `7` | no |
