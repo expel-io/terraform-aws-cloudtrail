@@ -1,5 +1,5 @@
 variable "expel_aws_account_arn" {
-  description = "Expel's AWS Account ARN to allow assuming role to gain CloudTrail access."
+  description = "Expel's AWS Account ARN to allow assuming role to gain CloudTrail access (this unique identifier will be provided to you by Expel)."
   type        = string
 }
 
