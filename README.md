@@ -7,7 +7,6 @@ module "expel_aws_cloudtrail_integration" {
   source  = "expel-io/terraform-aws-expel-cloudtrail"
   version = "1.0.0"
 
-  region                                  = "Replace with the AWS region of the account you're setting up"
   expel_aws_account_arn                   = "Replace with Expel's AWS Account ARN"
   expel_customer_organization_guid        = "Replace with your organization GUID provided by Expel"
 }
