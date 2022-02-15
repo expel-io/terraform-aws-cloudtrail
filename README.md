@@ -7,24 +7,49 @@ module "expel_aws_cloudtrail_integration" {
   source  = "expel-io/terraform-aws-expel-cloudtrail"
   version = "1.0.0"
 
-  expel_aws_account_arn                   = "Replace with Expel's AWS Account ARN"
-  expel_customer_organization_guid        = "Replace with your organization GUID provided by Expel"
+  expel_aws_account_arn            = "Replace with Expel's AWS Account ARN"
+  expel_customer_organization_guid = "Replace with your organization GUID provided by Expel"
 }
 ```
 
+<!-- begin-tf-docs -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.1.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0.0 |
-
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0.0 |
+## Inputs
 
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_expel_aws_account_arn"></a> [expel\_aws\_account\_arn](#input\_expel\_aws\_account\_arn) | Expel's AWS Account ARN to allow assuming role to gain CloudTrail access (this unique identifier will be provided to you by Expel). | `string` | n/a | yes |
+| <a name="input_expel_customer_organization_guid"></a> [expel\_customer\_organization\_guid](#input\_expel\_customer\_organization\_guid) | Expel customer's organization GUID (this unique identifier is assigned to you by Expel. You can find it in your browser URL after navigating to Settings > My Organization in Workbench). | `string` | n/a | yes |
+| <a name="input_enable_access_logging_bucket_encryption"></a> [enable\_access\_logging\_bucket\_encryption](#input\_enable\_access\_logging\_bucket\_encryption) | Enable to encrypt objects in the access logging bucket. | `bool` | `true` | no |
+| <a name="input_enable_bucket_access_logging"></a> [enable\_bucket\_access\_logging](#input\_enable\_bucket\_access\_logging) | Access logging provides detailed records for the requests that are made to an Amazon S3 bucket. | `bool` | `true` | no |
+| <a name="input_enable_bucket_encryption_key_rotation"></a> [enable\_bucket\_encryption\_key\_rotation](#input\_enable\_bucket\_encryption\_key\_rotation) | If `enable_s3_encryption` is set to true, enabling key rotation will rotate the KMS keys used for S3 bucket encryption. | `bool` | `true` | no |
+| <a name="input_enable_bucket_versioning"></a> [enable\_bucket\_versioning](#input\_enable\_bucket\_versioning) | Enable to protect against accidental/malicious removal or modification of S3 objects. | `bool` | `true` | no |
+| <a name="input_enable_cloudtrail_bucket_encryption"></a> [enable\_cloudtrail\_bucket\_encryption](#input\_enable\_cloudtrail\_bucket\_encryption) | Enable to encrypt objects in the cloudtrail bucket. | `bool` | `true` | no |
+| <a name="input_enable_cloudtrail_log_file_validation"></a> [enable\_cloudtrail\_log\_file\_validation](#input\_enable\_cloudtrail\_log\_file\_validation) | Validates that a log file was not modified, deleted, or unchanged after CloudTrail delivered it. | `bool` | `true` | no |
+| <a name="input_enable_organization_trail"></a> [enable\_organization\_trail](#input\_enable\_organization\_trail) | When enabled, log events for the master account and all member accounts. | `bool` | `false` | no |
+| <a name="input_enable_sqs_encryption"></a> [enable\_sqs\_encryption](#input\_enable\_sqs\_encryption) | Enable server-side encryption (SSE) of message content with SQS-owned encryption keys. | `bool` | `true` | no |
+| <a name="input_expel_assume_role_session_name"></a> [expel\_assume\_role\_session\_name](#input\_expel\_assume\_role\_session\_name) | The session name Expel will use when authenticating. | `string` | `"ExpelCloudTrailServiceSession"` | no |
+| <a name="input_prefix"></a> [prefix](#input\_prefix) | A prefix to group all Expel integration resources. | `string` | `"expel-aws-integration"` | no |
+| <a name="input_queue_message_retention_days"></a> [queue\_message\_retention\_days](#input\_queue\_message\_retention\_days) | The visibility timeout for the queue. See: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html | `number` | `7` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | A set of tags to group resources. | `map` | `{}` | no |
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_aws_region"></a> [aws\_region](#output\_aws\_region) | The AWS Region where the CloudTrail resources exist |
+| <a name="output_role_arn"></a> [role\_arn](#output\_role\_arn) | IAM Role ARN of the role for Expel to assume to access CloudTrail data |
+| <a name="output_role_session_name"></a> [role\_session\_name](#output\_role\_session\_name) | The session name Expel will use when authenticating |
+| <a name="output_sqs_queue_url"></a> [sqs\_queue\_url](#output\_sqs\_queue\_url) | URL of the queue consuming from the S3 bucket |
 ## Resources
 
 | Name | Type |
@@ -55,31 +80,4 @@ module "expel_aws_cloudtrail_integration" {
 | [aws_iam_policy_document.cloudtrail_manager_iam_document](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.sqs_bucket_iam_document](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
-
-## Inputs
-
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_enable_access_logging_bucket_encryption"></a> [enable\_access\_logging\_bucket\_encryption](#input\_enable\_access\_logging\_bucket\_encryption) | Enable to encrypt objects in the access logging bucket. | `bool` | `true` | no |
-| <a name="input_enable_bucket_access_logging"></a> [enable\_bucket\_access\_logging](#input\_enable\_bucket\_access\_logging) | Access logging provides detailed records for the requests that are made to an Amazon S3 bucket. | `bool` | `true` | no |
-| <a name="input_enable_bucket_encryption_key_rotation"></a> [enable\_bucket\_encryption\_key\_rotation](#input\_enable\_bucket\_encryption\_key\_rotation) | If `enable_s3_encryption` is set to true, enabling key rotation will rotate the KMS keys used for S3 bucket encryption. | `bool` | `true` | no |
-| <a name="input_enable_bucket_versioning"></a> [enable\_bucket\_versioning](#input\_enable\_bucket\_versioning) | Enable to protect against accidental/malicious removal or modification of S3 objects. | `bool` | `true` | no |
-| <a name="input_enable_cloudtrail_bucket_encryption"></a> [enable\_cloudtrail\_bucket\_encryption](#input\_enable\_cloudtrail\_bucket\_encryption) | Enable to encrypt objects in the cloudtrail bucket. | `bool` | `true` | no |
-| <a name="input_enable_cloudtrail_log_file_validation"></a> [enable\_cloudtrail\_log\_file\_validation](#input\_enable\_cloudtrail\_log\_file\_validation) | Validates that a log file was not modified, deleted, or unchanged after CloudTrail delivered it. | `bool` | `true` | no |
-| <a name="input_enable_organization_trail"></a> [enable\_organization\_trail](#input\_enable\_organization\_trail) | When enabled, log events for the master account and all member accounts. | `bool` | `false` | no |
-| <a name="input_enable_sqs_encryption"></a> [enable\_sqs\_encryption](#input\_enable\_sqs\_encryption) | Enable server-side encryption (SSE) of message content with SQS-owned encryption keys. | `bool` | `true` | no |
-| <a name="input_expel_assume_role_session_name"></a> [expel\_assume\_role\_session\_name](#input\_expel\_assume\_role\_session\_name) | The session name Expel will use when authenticating. | `string` | `"ExpelCloudTrailServiceSession"` | no |
-| <a name="input_expel_aws_account_arn"></a> [expel\_aws\_account\_arn](#input\_expel\_aws\_account\_arn) | Expel's AWS Account ARN to allow assuming role to gain CloudTrail access (this unique identifier will be provided to you by Expel). | `string` | n/a | yes |
-| <a name="input_expel_customer_organization_guid"></a> [expel\_customer\_organization\_guid](#input\_expel\_customer\_organization\_guid) | Expel customer's organization GUID (this unique identifier is assigned to you by Expel. You can find it in your browser URL after navigating to Settings > My Organization in Workbench). | `string` | n/a | yes |
-| <a name="input_prefix"></a> [prefix](#input\_prefix) | A prefix to group all Expel integration resources. | `string` | `"expel-aws-integration"` | no |
-| <a name="input_queue_message_retention_days"></a> [queue\_message\_retention\_days](#input\_queue\_message\_retention\_days) | The visibility timeout for the queue. See: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html | `number` | `7` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | A set of tags to group resources. | `map` | `{}` | no |
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| <a name="output_aws_region"></a> [aws\_region](#output\_aws\_region) | The AWS Region where the CloudTrail resources exist |
-| <a name="output_role_arn"></a> [role\_arn](#output\_role\_arn) | IAM Role ARN of the role for Expel to assume to access CloudTrail data |
-| <a name="output_role_session_name"></a> [role\_session\_name](#output\_role\_session\_name) | The session name Expel will use when authenticating |
-| <a name="output_sqs_queue_url"></a> [sqs\_queue\_url](#output\_sqs\_queue\_url) | URL of the queue consuming from the S3 bucket |
+<!-- end-tf-docs -->
