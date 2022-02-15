@@ -1,0 +1,20 @@
+formatter: "markdown table"
+
+sort:
+  enabled: true
+  by: required
+
+content: |-
+  {{ .Requirements }}
+  {{ .Providers }}
+  {{ .Inputs }}
+  {{ .Outputs }}
+  {{ .Resources }}
+
+output:
+  file: README.md
+  mode: inject
+  template: |-
+    <!-- begin-tf-docs -->
+    {{ .Content }}
+    <!-- end-tf-docs -->
