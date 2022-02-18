@@ -4,7 +4,7 @@ variable "expel_customer_organization_guid" {
 }
 
 variable "expel_aws_account_arn" {
-  description = "Expel's AWS Account ARN to allow assuming role to gain CloudTrail access (this unique identifier will be provided to you by Expel)."
+  description = "Expel's AWS Account ARN to allow assuming role to gain CloudTrail access."
   type        = string
   default     = "arn:aws:iam::012205512454:user/ExpelCloudService"
 }
