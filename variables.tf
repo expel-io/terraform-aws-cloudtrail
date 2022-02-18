@@ -1,11 +1,12 @@
-variable "expel_aws_account_arn" {
-  description = "Expel's AWS Account ARN to allow assuming role to gain CloudTrail access (this unique identifier will be provided to you by Expel)."
-  type        = string
-}
-
 variable "expel_customer_organization_guid" {
   description = "Expel customer's organization GUID (this unique identifier is assigned to you by Expel. You can find it in your browser URL after navigating to Settings > My Organization in Workbench)."
   type        = string
+}
+
+variable "expel_aws_account_arn" {
+  description = "Expel's AWS Account ARN to allow assuming role to gain CloudTrail access."
+  type        = string
+  default     = "arn:aws:iam::012205512454:user/ExpelCloudService"
 }
 
 variable "expel_assume_role_session_name" {
