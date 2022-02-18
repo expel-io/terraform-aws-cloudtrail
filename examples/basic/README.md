@@ -1,6 +1,6 @@
 # Basic
 
-This configuration sets up appropriate AWS resources that are necessary to integrate Expel's Workbench with a new AWS CloudTrail instance.
+This configuration sets up appropriate AWS resources that are necessary to integrate Expel Workbench with a new AWS CloudTrail instance.
 
 This `Basic` example is the simplest onboarding experience, as it assumes a single AWS Account is being onboarded with a new CloudTrail entity.
 

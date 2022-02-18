@@ -1,7 +1,8 @@
 # terraform-aws-cloudtrail
-Terraform module for integrating Expel's Workbench with AWS CloudTrail for log analysis.
+Terraform module for configuring AWS to integrate with Expel Workbench.
 
-Configures a CloudTrail stack (CloudTrail & S3 bucket) with a notification queue that [Expel's Workbench](https://workbench.expel.io/) consumes.
+Configures a CloudTrail stack (CloudTrail & S3 bucket) with a notification queue that
+[Expel Workbench](https://workbench.expel.io/) consumes.
 
 ## Usage
 ```hcl
@@ -9,9 +10,20 @@ module "expel_aws_cloudtrail" {
   source  = "expel-io/terraform-aws-cloudtrail"
   version = "1.0.0"
 
-  expel_customer_organization_guid = "Replace with your organization GUID provided by Expel"
+  expel_customer_organization_guid = "Replace with your organization GUID from Expel Workbench"
+  region = "AWS region in which notification queue for CloudTrail will be created"
 }
 ```
+Once you have configured your AWS environment, go to
+https://workbench.expel.io/settings/security-devices?setupIntegration=aws and create an AWS CloudTrail
+security device to enable Expel to begin monitoring your AWS environment.
+
+## Limitations
+1. Only supports onboarding a single AWS account, not an entire AWS Organization.
+2. Will always create a new CloudTrail, does not support re-using an existing CloudTrail.
+
+See https://support.expel.io/hc/en-us/articles/360061333154-AWS-CloudTrail-getting-started-guide for options if you
+have an Organization or already have a CloudTrail you want to re-use.
 
 <!-- begin-tf-docs -->
 ## Requirements
