@@ -1,12 +1,12 @@
-# terraform-aws-expel-cloudtrail
+# terraform-aws-cloudtrail
 Terraform module for integrating Expel's Workbench with AWS CloudTrail for log analysis.
 
 Configures a CloudTrail stack (CloudTrail & S3 bucket) with a notification queue that [Expel's Workbench](https://workbench.expel.io/) consumes.
 
 ## Usage
 ```hcl
-module "expel_aws_cloudtrail_integration" {
-  source  = "expel-io/terraform-aws-expel-cloudtrail"
+module "expel_aws_cloudtrail" {
+  source  = "expel-io/terraform-aws-cloudtrail"
   version = "1.0.0"
 
   expel_customer_organization_guid = "Replace with your organization GUID provided by Expel"
