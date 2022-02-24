@@ -23,7 +23,7 @@ security device to enable Expel to begin monitoring your AWS environment.
 2. Will always create a new CloudTrail, does not support re-using an existing CloudTrail.
 
 See https://support.expel.io/hc/en-us/articles/360061333154-AWS-CloudTrail-getting-started-guide for options if you
-have an Organization or already have a CloudTrail you want to re-use.
+have an AWS Organization or already have a CloudTrail you want to re-use.
 
 <!-- begin-tf-docs -->
 ## Requirements
