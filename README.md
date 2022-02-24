@@ -1,7 +1,8 @@
 # terraform-aws-cloudtrail
-Terraform module for integrating Expel's Workbench with AWS CloudTrail for log analysis.
+Terraform module for configuring AWS to integrate with Expel Workbench.
 
-Configures a CloudTrail stack (CloudTrail & S3 bucket) with a notification queue that [Expel's Workbench](https://workbench.expel.io/) consumes.
+Configures a CloudTrail stack (CloudTrail & S3 bucket) with a notification queue that
+[Expel Workbench](https://workbench.expel.io/) consumes.
 
 ## Usage
 ```hcl
@@ -9,9 +10,20 @@ module "expel_aws_cloudtrail" {
   source  = "expel-io/terraform-aws-cloudtrail"
   version = "1.0.0"
 
-  expel_customer_organization_guid = "Replace with your organization GUID provided by Expel"
+  expel_customer_organization_guid = "Replace with your organization GUID from Expel Workbench"
+  region = "AWS region in which notification queue for CloudTrail will be created"
 }
 ```
+Once you have configured your AWS environment, go to
+https://workbench.expel.io/settings/security-devices?setupIntegration=aws and create an AWS CloudTrail
+security device to enable Expel to begin monitoring your AWS environment.
+
+## Limitations
+1. Only supports onboarding a single AWS account, not an entire AWS Organization.
+2. Will always create a new CloudTrail, does not support re-using an existing CloudTrail.
+
+See https://support.expel.io/hc/en-us/articles/360061333154-AWS-CloudTrail-getting-started-guide for options if you
+have an AWS Organization or already have a CloudTrail you want to re-use.
 
 <!-- begin-tf-docs -->
 ## Requirements
@@ -29,14 +41,14 @@ module "expel_aws_cloudtrail" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_expel_customer_organization_guid"></a> [expel\_customer\_organization\_guid](#input\_expel\_customer\_organization\_guid) | Expel customer's organization GUID (this unique identifier is assigned to you by Expel. You can find it in your browser URL after navigating to Settings > My Organization in Workbench). | `string` | n/a | yes |
+| <a name="input_expel_customer_organization_guid"></a> [expel\_customer\_organization\_guid](#input\_expel\_customer\_organization\_guid) | Expel customer's organization GUID assigned to you by Expel. You can find it in your browser URL after navigating to Settings > My Organization in Workbench. | `string` | n/a | yes |
 | <a name="input_enable_access_logging_bucket_encryption"></a> [enable\_access\_logging\_bucket\_encryption](#input\_enable\_access\_logging\_bucket\_encryption) | Enable to encrypt objects in the access logging bucket. | `bool` | `true` | no |
 | <a name="input_enable_bucket_access_logging"></a> [enable\_bucket\_access\_logging](#input\_enable\_bucket\_access\_logging) | Access logging provides detailed records for the requests that are made to an Amazon S3 bucket. | `bool` | `true` | no |
 | <a name="input_enable_bucket_encryption_key_rotation"></a> [enable\_bucket\_encryption\_key\_rotation](#input\_enable\_bucket\_encryption\_key\_rotation) | If `enable_s3_encryption` is set to true, enabling key rotation will rotate the KMS keys used for S3 bucket encryption. | `bool` | `true` | no |
 | <a name="input_enable_bucket_versioning"></a> [enable\_bucket\_versioning](#input\_enable\_bucket\_versioning) | Enable to protect against accidental/malicious removal or modification of S3 objects. | `bool` | `true` | no |
 | <a name="input_enable_cloudtrail_bucket_encryption"></a> [enable\_cloudtrail\_bucket\_encryption](#input\_enable\_cloudtrail\_bucket\_encryption) | Enable to encrypt objects in the cloudtrail bucket. | `bool` | `true` | no |
 | <a name="input_enable_cloudtrail_log_file_validation"></a> [enable\_cloudtrail\_log\_file\_validation](#input\_enable\_cloudtrail\_log\_file\_validation) | Validates that a log file was not modified, deleted, or unchanged after CloudTrail delivered it. | `bool` | `true` | no |
-| <a name="input_enable_organization_trail"></a> [enable\_organization\_trail](#input\_enable\_organization\_trail) | When enabled, log events for the master account and all member accounts. | `bool` | `false` | no |
+| <a name="input_enable_organization_trail"></a> [enable\_organization\_trail](#input\_enable\_organization\_trail) | When enabled, log events for the management account and all member accounts. | `bool` | `false` | no |
 | <a name="input_enable_sqs_encryption"></a> [enable\_sqs\_encryption](#input\_enable\_sqs\_encryption) | Enable server-side encryption (SSE) of message content with SQS-owned encryption keys. | `bool` | `true` | no |
 | <a name="input_expel_assume_role_session_name"></a> [expel\_assume\_role\_session\_name](#input\_expel\_assume\_role\_session\_name) | The session name Expel will use when authenticating. | `string` | `"ExpelCloudTrailServiceSession"` | no |
 | <a name="input_expel_aws_account_arn"></a> [expel\_aws\_account\_arn](#input\_expel\_aws\_account\_arn) | Expel's AWS Account ARN to allow assuming role to gain CloudTrail access. | `string` | `"arn:aws:iam::012205512454:user/ExpelCloudService"` | no |

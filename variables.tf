@@ -1,5 +1,5 @@
 variable "expel_customer_organization_guid" {
-  description = "Expel customer's organization GUID (this unique identifier is assigned to you by Expel. You can find it in your browser URL after navigating to Settings > My Organization in Workbench)."
+  description = "Expel customer's organization GUID assigned to you by Expel. You can find it in your browser URL after navigating to Settings > My Organization in Workbench."
   type        = string
 }
 
@@ -16,7 +16,7 @@ variable "expel_assume_role_session_name" {
 }
 
 variable "enable_organization_trail" {
-  description = "When enabled, log events for the master account and all member accounts."
+  description = "When enabled, log events for the management account and all member accounts."
   type        = bool
   default     = false
 }

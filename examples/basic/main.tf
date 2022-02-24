@@ -3,7 +3,7 @@ variable "region" {
 }
 
 variable "expel_customer_organization_guid" {
-  description = "Use your organization GUID -- (this unique identifier is assigned to you by Expel. You can find it in your browser URL after navigating to Settings > My Organization in Workbench)"
+  description = "Use your organization GUID assigned to you by Expel. You can find it in your browser URL after navigating to Settings > My Organization in Workbench"
   type        = string
 }
 
