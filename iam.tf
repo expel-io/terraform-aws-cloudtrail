@@ -101,8 +101,7 @@ data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
     effect    = "Allow"
   }
 
-  # the following statement permits Expel to view AWS infrastructure from a high level
-  # to further investigate when CloudTrail logs provokes doing so.
+  # required by Expel Workbench for the gathering of information about organization's AWS footprint
   statement {
     actions = [
       "cloudtrail:DescribeTrails",

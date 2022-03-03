@@ -18,6 +18,9 @@ Once you have configured your AWS environment, go to
 https://workbench.expel.io/settings/security-devices?setupIntegration=aws and create an AWS CloudTrail
 security device to enable Expel to begin monitoring your AWS environment.
 
+## Permissions
+The permissions allocated by this module allow Expel Workbench to perform investigations and get a broad understanding of your AWS footprint.
+
 ## Limitations
 1. Only supports onboarding a single AWS account, not an entire AWS Organization.
 2. Will always create a new CloudTrail, does not support re-using an existing CloudTrail.
