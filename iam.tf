@@ -94,7 +94,6 @@ data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
   statement {
     actions = [
       "sqs:DeleteMessage",
-      "sqs:DeleteMessageBatch",
       "sqs:ReceiveMessage"
     ]
     resources = [aws_sqs_queue.cloudtrail_queue.arn]
