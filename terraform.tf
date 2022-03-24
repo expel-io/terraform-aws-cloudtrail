@@ -8,6 +8,9 @@ terraform {
   required_version = ">= 1.1.0"
 }
 
+data "aws_region" "current" {}
+data "aws_caller_identity" "current" {}
+
 locals {
   default_tags = {
     "vendor" = "expel"
@@ -17,6 +20,8 @@ locals {
     var.tags,
     local.default_tags,
   )
+
+  region                  = data.aws_region.current.name
+  customer_aws_account_id = data.aws_caller_identity.current.account_id
 }
 
-data "aws_region" "current" {}

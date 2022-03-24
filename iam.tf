@@ -86,12 +86,14 @@ resource "aws_iam_policy" "cloudtrail_manager_iam_policy" {
 # tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
   statement {
+    sid       = "Allow Expel Workbench to get objects from cloudtrail bucket"
     actions   = ["s3:GetObject"]
     resources = ["${aws_s3_bucket.cloudtrail_bucket.arn}/*"]
     effect    = "Allow"
   }
 
   statement {
+    sid = "Allow Expel Workbench to receive & delete SQS messages"
     actions = [
       "sqs:DeleteMessage",
       "sqs:ReceiveMessage"
@@ -100,8 +102,15 @@ data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
     effect    = "Allow"
   }
 
-  # required by Expel Workbench for the gathering of information about organization's AWS footprint
   statement {
+    sid       = "Allow Expel Workbench to decrypt cloudtrail bucket"
+    actions   = ["kms:Decrypt"]
+    resources = [aws_kms_key.cloudtrail_bucket_encryption_key.arn]
+    effect    = "Allow"
+  }
+
+  statement {
+    sid = "Allow Expel Workbench to gather information about organization's AWS footprint"
     actions = [
       "cloudtrail:DescribeTrails",
       "cloudtrail:GetTrailStatus",

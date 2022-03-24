@@ -3,7 +3,7 @@
 resource "aws_sqs_queue" "cloudtrail_queue" {
   name                      = "${var.prefix}-queue"
   message_retention_seconds = var.queue_message_retention_days * 24 * 60 * 60
-  sqs_managed_sse_enabled   = var.enable_sqs_encryption
+  kms_master_key_id         = aws_kms_key.cloudtrail_bucket_encryption_key.arn
 
   tags = local.tags
 }
