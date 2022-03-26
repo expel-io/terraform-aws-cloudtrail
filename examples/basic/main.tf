@@ -25,7 +25,7 @@ module "expel_aws_cloudtrail_integration" {
   enable_bucket_versioning                = true
   enable_bucket_encryption_key_rotation   = true
 
-  prefix = "expel-aws-integration"
+  prefix = "expel-aws-cloudtrail"
   tags = {
     "is_external" = "true"
   }

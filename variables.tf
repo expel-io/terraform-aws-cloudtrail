@@ -24,7 +24,7 @@ variable "enable_organization_trail" {
 variable "prefix" {
   description = "A prefix to group all Expel integration resources."
   type        = string
-  default     = "expel-aws-integration"
+  default     = "expel-aws-cloudtrail"
 
   validation {
     condition     = length(var.prefix) <= 26

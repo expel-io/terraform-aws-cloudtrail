@@ -23,7 +23,7 @@ data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:cloudtrail:arn"
-      values   = ["arn:aws:cloudtrail:${local.region}:${local.customer_aws_account_id}:trail/*"]
+      values   = ["arn:aws:cloudtrail:*:${local.customer_aws_account_id}:trail/*"]
     }
     condition {
       test     = "StringEquals"
@@ -42,9 +42,9 @@ data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
     actions   = ["kms:DescribeKey"]
     resources = ["*"]
     condition {
-      test     = "StringLike"
+      test     = "StringEquals"
       variable = "aws:SourceArn"
-      values   = ["arn:aws:cloudtrail:*:${local.customer_aws_account_id}:trail/${var.prefix}-cloudtrail"]
+      values   = ["arn:aws:cloudtrail:${local.region}:${local.customer_aws_account_id}:trail/${var.prefix}-cloudtrail"]
     }
   }
 
@@ -61,6 +61,11 @@ data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
       test     = "StringLike"
       variable = "aws:SourceArn"
       values   = ["arn:aws:s3:::${var.prefix}-${random_uuid.cloudtrail_bucket_name.result}"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = ["${local.customer_aws_account_id}"]
     }
   }
 }
