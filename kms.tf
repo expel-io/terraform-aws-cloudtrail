@@ -28,7 +28,7 @@ data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
     condition {
       test     = "StringEquals"
       variable = "aws:SourceArn"
-      values   = ["arn:aws:cloudtrail:${local.region}:${local.customer_aws_account_id}:trail/${var.prefix}-cloudtrail"]
+      values   = ["arn:aws:cloudtrail:${local.region}:${local.customer_aws_account_id}:trail/${var.prefix}-trail"]
     }
   }
 
@@ -44,7 +44,7 @@ data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
     condition {
       test     = "StringEquals"
       variable = "aws:SourceArn"
-      values   = ["arn:aws:cloudtrail:${local.region}:${local.customer_aws_account_id}:trail/${var.prefix}-cloudtrail"]
+      values   = ["arn:aws:cloudtrail:${local.region}:${local.customer_aws_account_id}:trail/${var.prefix}-trail"]
     }
   }
 
