@@ -93,7 +93,7 @@ data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
   }
 
   statement {
-    sid = "Allow Expel Workbench to receive & delete SQS messages"
+    sid = "Allow Expel Workbench to receive and delete SQS messages"
     actions = [
       "sqs:DeleteMessage",
       "sqs:ReceiveMessage"
@@ -110,7 +110,7 @@ data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
   }
 
   statement {
-    sid = "Allow Expel Workbench to gather information about organization's AWS footprint"
+    sid = "Allow Expel Workbench to gather information about AWS footprint"
     actions = [
       "cloudtrail:DescribeTrails",
       "cloudtrail:GetTrailStatus",

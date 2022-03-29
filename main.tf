@@ -1,5 +1,5 @@
 resource "aws_cloudtrail" "cloudtrail" {
-  name                  = "${var.prefix}-cloudtrail"
+  name                  = "${var.prefix}-trail"
   is_multi_region_trail = true
   is_organization_trail = var.enable_organization_trail
   s3_bucket_name        = aws_s3_bucket.cloudtrail_bucket.id
