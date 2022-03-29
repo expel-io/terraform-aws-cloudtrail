@@ -1,5 +1,3 @@
-# ignoring since cloudtrail is inaccessable beyond integration with S3 which uses encryption by default
-# tfsec:ignore:aws-cloudtrail-enable-at-rest-encryption
 resource "aws_cloudtrail" "cloudtrail" {
   name                  = "${var.prefix}-cloudtrail"
   is_multi_region_trail = true
@@ -7,6 +5,7 @@ resource "aws_cloudtrail" "cloudtrail" {
   s3_bucket_name        = aws_s3_bucket.cloudtrail_bucket.id
 
   enable_log_file_validation = var.enable_cloudtrail_log_file_validation
+  kms_key_id                 = aws_kms_key.cloudtrail_bucket_encryption_key.arn
 
   event_selector {
     include_management_events = true
