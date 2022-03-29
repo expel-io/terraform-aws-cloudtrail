@@ -8,7 +8,7 @@ Configures a CloudTrail stack (CloudTrail & S3 bucket) with a notification queue
 ```hcl
 module "expel_aws_cloudtrail" {
   source  = "expel-io/cloudtrail/aws"
-  version = "1.0.0"
+  version = "1.1.1"
 
   expel_customer_organization_guid = "Replace with your organization GUID from Expel Workbench"
   region = "AWS region in which notification queue for CloudTrail will be created"
