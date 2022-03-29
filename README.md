@@ -2,7 +2,7 @@
 Terraform module for configuring AWS to integrate with [Expel Workbench](https://workbench.expel.io/).
 
 Configures a CloudTrail stack (CloudTrail & S3 bucket) with a notification queue that
-[Expel Workbench](https://workbench.expel.io/) consumes.
+[Expel Workbench](https://workbench.expel.io/) consumes. Cloudtrail, S3 bucket and SQS queue are encrypted by default using a custom managed KMS key.
 
 ## Usage
 ```hcl

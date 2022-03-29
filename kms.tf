@@ -1,7 +1,7 @@
 # Key policies for cloudtrail key
 data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
   statement {
-    sid    = "enable IAM User Permissions"
+    sid    = "Enable IAM User Permissions"
     effect = "Allow"
     principals {
       type        = "AWS"
