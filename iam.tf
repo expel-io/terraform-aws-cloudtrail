@@ -1,10 +1,10 @@
-// Allow Cloudtrail to store objects in S3 bucket
 resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
   bucket = aws_s3_bucket.cloudtrail_bucket.bucket
   policy = data.aws_iam_policy_document.cloudtrail_bucket_iam_document.json
 }
 
 data "aws_iam_policy_document" "cloudtrail_bucket_iam_document" {
+  # Necessary to allow any bucket permissions
   statement {
     actions   = ["s3:GetBucketAcl"]
     resources = [aws_s3_bucket.cloudtrail_bucket.arn]
@@ -14,6 +14,8 @@ data "aws_iam_policy_document" "cloudtrail_bucket_iam_document" {
       identifiers = ["cloudtrail.amazonaws.com"]
     }
   }
+
+  # Allow Cloudtrail to store objects in S3 bucket
   statement {
     actions = ["s3:PutObject"]
     resources = [
@@ -27,13 +29,13 @@ data "aws_iam_policy_document" "cloudtrail_bucket_iam_document" {
   }
 }
 
-// Allow S3 to queue messages onto SQS
 resource "aws_sqs_queue_policy" "sqs_bucket_policy" {
   queue_url = aws_sqs_queue.cloudtrail_queue.id
   policy    = data.aws_iam_policy_document.sqs_bucket_iam_document.json
 }
 
 data "aws_iam_policy_document" "sqs_bucket_iam_document" {
+  # Allow S3 to queue messages onto SQS
   statement {
     actions   = ["sqs:SendMessage"]
     resources = [aws_sqs_queue.cloudtrail_queue.arn]
@@ -45,8 +47,8 @@ data "aws_iam_policy_document" "sqs_bucket_iam_document" {
   }
 }
 
-// Allow Expel to access CloudTrail's S3 bucket & SQS Queue
 data "aws_iam_policy_document" "assume_role_iam_document" {
+  # Allow Expel Workbench to decrypt cloudtrail bucket
   statement {
     actions = ["sts:AssumeRole"]
     effect  = "Allow"
@@ -85,15 +87,15 @@ resource "aws_iam_policy" "cloudtrail_manager_iam_policy" {
 # ignoring as these policies enable necessary observability on all AWS resources
 # tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
+  # Allow Expel Workbench to get objects from cloudtrail bucket
   statement {
-    sid       = "Allow Expel Workbench to get objects from cloudtrail bucket"
     actions   = ["s3:GetObject"]
     resources = ["${aws_s3_bucket.cloudtrail_bucket.arn}/*"]
     effect    = "Allow"
   }
 
+  # Allow Expel Workbench to receive and delete SQS messages
   statement {
-    sid = "Allow Expel Workbench to receive and delete SQS messages"
     actions = [
       "sqs:DeleteMessage",
       "sqs:ReceiveMessage"
@@ -102,15 +104,15 @@ data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
     effect    = "Allow"
   }
 
+  # Allow Expel Workbench to decrypt cloudtrail bucket
   statement {
-    sid       = "Allow Expel Workbench to decrypt cloudtrail bucket"
     actions   = ["kms:Decrypt"]
     resources = [aws_kms_key.cloudtrail_bucket_encryption_key.arn]
     effect    = "Allow"
   }
 
+  # Allow Expel Workbench to gather information about AWS footprint
   statement {
-    sid = "Allow Expel Workbench to gather information about AWS footprint"
     actions = [
       "cloudtrail:DescribeTrails",
       "cloudtrail:GetTrailStatus",
