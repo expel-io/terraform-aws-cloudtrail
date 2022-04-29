@@ -31,13 +31,12 @@ resource "aws_cloudformation_stack_set" "permeate_account_policy" {
     enabled = true
   }
 
-  template_body = templatefile(
-    "./stackset.tftpl",
-    {
-      expel_customer_organization_guid = var.expel_customer_organization_guid,
-      expel_assume_role_arn            = aws_iam_role.expel_assume_role.arn
-    }
-  )
+  parameters = {
+    expel_customer_organization_guid = var.expel_customer_organization_guid,
+    expel_assume_role_arn = aws_iam_role.expel_assume_role.arn
+  }
+
+  template_body = local.stackset_template
 }
 
 data "aws_iam_policy_document" "AWSCloudFormationStackSetAdministrationRole_ExecutionPolicy" {

@@ -1,5 +1,15 @@
+locals {
+    stackset_template = <<TEMPLATE
 {
     "AWSTemplateFormatVersion": "2010-09-09",
+    "Parameters" : {
+        "expel_customer_organization_guid" : {
+            "Type" : "String"
+        },
+         "expel_assume_role_arn" : {
+            "Type" : "String"
+        }
+    },
     "Resources": {
         "IAMR7FYC": {
             "Type": "AWS::IAM::Role",
@@ -16,12 +26,12 @@
                         {
                             "Effect": "Allow",
                             "Principal": {
-                                "AWS": "${expel_assume_role_arn}"
+                                "AWS": "expel_assume_role_arn"
                             },
                             "Action": "sts:AssumeRole",
                             "Condition": {
                                 "StringEquals": {
-                                    "sts:ExternalId": "${expel_customer_organization_guid}"
+                                    "sts:ExternalId": "expel_customer_organization_guid"
                                 }
                             }
                         }
@@ -73,4 +83,6 @@
             }
         }
     }
+}
+TEMPLATE
 }
