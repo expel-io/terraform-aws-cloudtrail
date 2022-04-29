@@ -1,5 +1,5 @@
 locals {
-    stackset_template = <<TEMPLATE
+  stackset_template = <<TEMPLATE
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Parameters" : {

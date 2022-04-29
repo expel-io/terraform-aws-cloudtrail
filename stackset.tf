@@ -33,7 +33,7 @@ resource "aws_cloudformation_stack_set" "permeate_account_policy" {
 
   parameters = {
     expel_customer_organization_guid = var.expel_customer_organization_guid,
-    expel_assume_role_arn = aws_iam_role.expel_assume_role.arn
+    expel_assume_role_arn            = aws_iam_role.expel_assume_role.arn
   }
 
   template_body = local.stackset_template
