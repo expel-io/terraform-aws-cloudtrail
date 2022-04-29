@@ -57,7 +57,7 @@ jobs:
       - terraform/validate
   security-scan:
     docker:
-      - image: aquasec/tfsec-ci:v1.0
+      - image: aquasec/tfsec-ci:v1.19
         user: root
     steps:
       - attach_workspace:

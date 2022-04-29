@@ -1,8 +1,6 @@
 resource "random_uuid" "cloudtrail_bucket_name" {
 }
 
-# temporarily ignoring because tfsec does not yet support AWS v4 configuration
-# tfsec:ignore:aws-s3-enable-bucket-encryption tfsec:ignore:aws-s3-encryption-customer-key tfsec:ignore:aws-s3-enable-bucket-logging tfsec:ignore:aws-s3-enable-versioning
 resource "aws_s3_bucket" "cloudtrail_bucket" {
   bucket = "${var.prefix}-${random_uuid.cloudtrail_bucket_name.result}"
 
@@ -45,8 +43,6 @@ resource "aws_s3_bucket_logging" "cloudtrail_bucket_logging" {
   target_prefix = "log/"
 }
 
-# temporarily ignoring because tfsec does not yet support AWS v4 configuration
-# tfsec:ignore:aws-s3-enable-bucket-encryption tfsec:ignore:aws-s3-encryption-customer-key tfsec:ignore:aws-s3-enable-bucket-logging tfsec:ignore:aws-s3-enable-versioning
 resource "aws_s3_bucket" "cloudtrail_access_log_bucket" {
   count = var.enable_bucket_access_logging ? 1 : 0
 
