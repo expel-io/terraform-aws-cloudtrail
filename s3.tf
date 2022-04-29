@@ -1,7 +1,8 @@
-# temporarily ignoring because tfsec does not yet support AWS v4 configuration
-# tfsec:ignore:aws-s3-enable-bucket-encryption tfsec:ignore:aws-s3-encryption-customer-key tfsec:ignore:aws-s3-enable-bucket-logging tfsec:ignore:aws-s3-enable-versioning
+resource "random_uuid" "cloudtrail_bucket_name" {
+}
+
 resource "aws_s3_bucket" "cloudtrail_bucket" {
-  bucket_prefix = var.prefix
+  bucket = "${var.prefix}-${random_uuid.cloudtrail_bucket_name.result}"
 
   depends_on = [aws_sqs_queue.cloudtrail_queue]
 
@@ -23,12 +24,11 @@ resource "aws_s3_bucket_versioning" "cloudtrail_bucket_versioning" {
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "cloudtrail_bucket_server_side_encryption_configuration" {
-  count  = var.enable_cloudtrail_bucket_encryption ? 1 : 0
   bucket = aws_s3_bucket.cloudtrail_bucket.bucket
 
   rule {
     apply_server_side_encryption_by_default {
-      kms_master_key_id = aws_kms_key.cloudtrail_bucket_encryption_key[0].arn
+      kms_master_key_id = aws_kms_key.cloudtrail_bucket_encryption_key.arn
       sse_algorithm     = "aws:kms"
     }
   }
@@ -43,12 +43,10 @@ resource "aws_s3_bucket_logging" "cloudtrail_bucket_logging" {
   target_prefix = "log/"
 }
 
-# temporarily ignoring because tfsec does not yet support AWS v4 configuration
-# tfsec:ignore:aws-s3-enable-bucket-encryption tfsec:ignore:aws-s3-encryption-customer-key tfsec:ignore:aws-s3-enable-bucket-logging tfsec:ignore:aws-s3-enable-versioning
 resource "aws_s3_bucket" "cloudtrail_access_log_bucket" {
   count = var.enable_bucket_access_logging ? 1 : 0
 
-  bucket_prefix = "${var.prefix}-logs"
+  bucket = "${var.prefix}-logs-${random_uuid.cloudtrail_bucket_name.result}"
 
   tags = local.tags
 }
@@ -75,27 +73,12 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "cloudtrail_access
 
   rule {
     apply_server_side_encryption_by_default {
-      kms_master_key_id = aws_kms_key.access_logging_bucket_encryption_key[0].arn
+      kms_master_key_id = aws_kms_key.cloudtrail_bucket_encryption_key.arn
       sse_algorithm     = "aws:kms"
     }
   }
 }
 
-resource "aws_kms_key" "cloudtrail_bucket_encryption_key" {
-  count = var.enable_cloudtrail_bucket_encryption ? 1 : 0
-
-  description         = "This key is used to encrypt cloudtrail bucket objects."
-  enable_key_rotation = var.enable_bucket_encryption_key_rotation
-  tags                = local.tags
-}
-
-resource "aws_kms_key" "access_logging_bucket_encryption_key" {
-  count = var.enable_access_logging_bucket_encryption ? 1 : 0
-
-  description         = "This key is used to encrypt access logging bucket objects."
-  enable_key_rotation = var.enable_bucket_encryption_key_rotation
-  tags                = local.tags
-}
 
 resource "aws_s3_bucket_public_access_block" "cloudtrail_bucket_public_access_block" {
   bucket = aws_s3_bucket.cloudtrail_bucket.id

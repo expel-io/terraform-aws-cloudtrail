@@ -10,7 +10,7 @@ output "role_session_name" {
 
 output "aws_region" {
   description = "The AWS Region where the CloudTrail resources exist"
-  value       = data.aws_region.current.name
+  value       = local.region
 }
 
 output "sqs_queue_url" {

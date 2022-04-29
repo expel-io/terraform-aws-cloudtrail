@@ -24,11 +24,11 @@ variable "enable_organization_trail" {
 variable "prefix" {
   description = "A prefix to group all Expel integration resources."
   type        = string
-  default     = "expel-aws-integration"
+  default     = "expel-aws-cloudtrail"
 
   validation {
-    condition     = length(var.prefix) <= 32
-    error_message = "Prefix value must be 32 characters or less."
+    condition     = length(var.prefix) <= 26
+    error_message = "Prefix value must be 26 characters or less."
   }
 }
 
@@ -45,12 +45,6 @@ variable "queue_message_retention_days" {
 
 variable "enable_sqs_encryption" {
   description = "Enable server-side encryption (SSE) of message content with SQS-owned encryption keys."
-  type        = bool
-  default     = true
-}
-
-variable "enable_cloudtrail_bucket_encryption" {
-  description = "Enable to encrypt objects in the cloudtrail bucket."
   type        = bool
   default     = true
 }
