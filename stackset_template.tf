@@ -3,10 +3,10 @@ locals {
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Parameters" : {
-        "expel_customer_organization_guid" : {
+        "ExpelCustomerOrganizationGUID" : {
             "Type" : "String"
         },
-         "expel_assume_role_arn" : {
+         "ExpelAssumeRoleARN" : {
             "Type" : "String"
         }
     },
@@ -26,12 +26,12 @@ locals {
                         {
                             "Effect": "Allow",
                             "Principal": {
-                                "AWS": "expel_assume_role_arn"
+                                "AWS": "ExpelAssumeRoleARN"
                             },
                             "Action": "sts:AssumeRole",
                             "Condition": {
                                 "StringEquals": {
-                                    "sts:ExternalId": "expel_customer_organization_guid"
+                                    "sts:ExternalId": "ExpelCustomerOrganizationGUID"
                                 }
                             }
                         }
