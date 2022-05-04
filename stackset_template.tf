@@ -19,19 +19,19 @@ locals {
                         "Ref": "IAMMP12SQ7"
                     }
                 ],
-                "RoleName": "ExpelRole",
+                "RoleName": "ExpelRoleTF",
                 "AssumeRolePolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
                         {
                             "Effect": "Allow",
                             "Principal": {
-                                "AWS": "ExpelAssumeRoleARN"
+                                "AWS": { "Ref": "ExpelAssumeRoleARN" }
                             },
                             "Action": "sts:AssumeRole",
                             "Condition": {
                                 "StringEquals": {
-                                    "sts:ExternalId": "ExpelCustomerOrganizationGUID"
+                                    "sts:ExternalId": { "Ref": "ExpelCustomerOrganizationGUID" }
                                 }
                             }
                         }
@@ -42,7 +42,7 @@ locals {
         "IAMMP12SQ7": {
             "Type": "AWS::IAM::ManagedPolicy",
             "Properties": {
-                "ManagedPolicyName": "ExpelAccessPolicy",
+                "ManagedPolicyName": "ExpelAccessPolicyTF",
                 "PolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [

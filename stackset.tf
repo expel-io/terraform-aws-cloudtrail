@@ -1,5 +1,4 @@
 # (WIP) cloudformation stackset for multi-account iam policies
-
 data "aws_iam_policy_document" "AWSCloudFormationStackSetAdministrationRole_assume_role_policy" {
   count = var.enable_organization_trail ? 1 : 0
 
@@ -26,7 +25,7 @@ resource "aws_iam_role" "AWSCloudFormationStackSetAdministrationRole" {
 resource "aws_cloudformation_stack_set" "permeate_account_policy" {
   count = var.enable_organization_trail ? 1 : 0
 
-  name             = "PermeateAccountPolicy"
+  name             = "PermeateAccountPolicyTF"
   description      = "TODO"
   permission_model = "SERVICE_MANAGED"
   capabilities     = ["CAPABILITY_NAMED_IAM"]
@@ -45,23 +44,6 @@ resource "aws_cloudformation_stack_set" "permeate_account_policy" {
   tags = local.tags
 }
 
-data "aws_iam_policy_document" "AWSCloudFormationStackSetAdministrationRole_ExecutionPolicy" {
-  count = var.enable_organization_trail ? 1 : 0
-
-  statement {
-    actions   = ["sts:AssumeRole"]
-    effect    = "Allow"
-    resources = ["arn:aws:iam::*:role/${aws_cloudformation_stack_set.permeate_account_policy[0].execution_role_name}"]
-  }
-}
-
-resource "aws_iam_role_policy" "AWSCloudFormationStackSetAdministrationRole_ExecutionPolicy" {
-  count = var.enable_organization_trail ? 1 : 0
-
-  name   = "ExecutionPolicy"
-  policy = data.aws_iam_policy_document.AWSCloudFormationStackSetAdministrationRole_ExecutionPolicy[0].json
-  role   = aws_iam_role.AWSCloudFormationStackSetAdministrationRole[0].name
-}
 
 resource "aws_cloudformation_stack_set_instance" "permeate_account_policy" {
   count = var.enable_organization_trail ? 1 : 0
