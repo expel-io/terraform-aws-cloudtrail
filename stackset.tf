@@ -1,4 +1,3 @@
-# (WIP) cloudformation stackset for multi-account iam policies
 data "aws_iam_policy_document" "AWSCloudFormationStackSetAdministrationRole_assume_role_policy" {
   count = var.enable_organization_trail ? 1 : 0
 
@@ -25,8 +24,8 @@ resource "aws_iam_role" "AWSCloudFormationStackSetAdministrationRole" {
 resource "aws_cloudformation_stack_set" "permeate_account_policy" {
   count = var.enable_organization_trail ? 1 : 0
 
-  name             = "PermeateAccountPolicyTF"
-  description      = "TODO"
+  name             = "PermeateAccountPolicy"
+  description      = "Creates policies in all accounts of the organinzation for Expel to get basic read permissions of resources in order to better support"
   permission_model = "SERVICE_MANAGED"
   capabilities     = ["CAPABILITY_NAMED_IAM"]
 

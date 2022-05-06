@@ -7,9 +7,6 @@ resource "aws_s3_bucket" "cloudtrail_bucket" {
   depends_on = [aws_sqs_queue.cloudtrail_queue]
 
   tags = local.tags
-
-  # TEMPORARY FOR TESTING
-  force_destroy = true
 }
 
 resource "aws_s3_bucket_acl" "cloudtrail_bucket_acl" {

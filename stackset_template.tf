@@ -19,7 +19,7 @@ locals {
                         "Ref": "IAMMP12SQ7"
                     }
                 ],
-                "RoleName": "ExpelRoleTF",
+                "RoleName": "ExpelRole",
                 "AssumeRolePolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
@@ -42,7 +42,7 @@ locals {
         "IAMMP12SQ7": {
             "Type": "AWS::IAM::ManagedPolicy",
             "Properties": {
-                "ManagedPolicyName": "ExpelAccessPolicyTF",
+                "ManagedPolicyName": "ExpelAccessPolicy",
                 "PolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
