@@ -1,4 +1,4 @@
- // Note: ExpelAccessPolicy is a duplicate policy statement with CloudTrail Manager IAM Policy
+// Note: ExpelAccessPolicy is a duplicate policy statement with CloudTrail Manager IAM Policy
 locals {
   stackset_template = <<TEMPLATE
 {
