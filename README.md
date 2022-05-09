@@ -8,7 +8,7 @@ Configures a CloudTrail stack (CloudTrail & S3 bucket) with a notification queue
 ```hcl
 module "expel_aws_cloudtrail" {
   source  = "expel-io/cloudtrail/aws"
-  version = "1.1.1"
+  version = "1.2.0"
 
   expel_customer_organization_guid = "Replace with your organization GUID from Expel Workbench"
   region = "AWS region in which notification queue for CloudTrail will be created"
@@ -21,12 +21,14 @@ security device to enable Expel to begin monitoring your AWS environment.
 ## Permissions
 The permissions allocated by this module allow Expel Workbench to perform investigations and get a broad understanding of your AWS footprint.
 
-## Limitations
-1. Only supports onboarding a single AWS account, not an entire AWS Organization.
-2. Will always create a new CloudTrail, does not support re-using an existing CloudTrail.
+## Use Cases
+1. Creating a new AWS CloudTrail for a single AWS account
+2. Creating a new AWS CloudTrial for an AWS organization (Set [enable\_organization\_trail](#input\_enable\_organization\_trail) input to true)
 
-See https://support.expel.io/hc/en-us/articles/360061333154-AWS-CloudTrail-getting-started-guide for options if you
-have an AWS Organization or already have a CloudTrail you want to re-use.
+## Limitations
+Will always create a new CloudTrail, does not support re-using an existing CloudTrail.
+
+See https://support.expel.io/hc/en-us/articles/360061333154-AWS-CloudTrail-getting-started-guide for options if you have a CloudTrail you want to re-use.
 
 <!-- begin-tf-docs -->
 ## Requirements
