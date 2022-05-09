@@ -111,6 +111,7 @@ data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
     effect    = "Allow"
   }
 
+  # Note: This is a duplicate policy statement with CloudFormation StackSet "PermeateAccountPolicy"
   # Allow Expel Workbench to gather information about AWS footprint
   statement {
     actions = [
