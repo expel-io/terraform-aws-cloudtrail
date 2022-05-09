@@ -25,7 +25,7 @@ resource "aws_cloudformation_stack_set" "permeate_account_policy" {
   count = var.enable_organization_trail ? 1 : 0
 
   name             = "PermeateAccountPolicy"
-  description      = "Creates policies in all accounts of the organinzation for Expel to get basic read permissions of resources in order to better support"
+  description      = "Creates policies in all accounts of the organinzation for Expel to get basic read permissions of resources in order to investigate alerts"
   permission_model = "SERVICE_MANAGED"
   capabilities     = ["CAPABILITY_NAMED_IAM"]
 
