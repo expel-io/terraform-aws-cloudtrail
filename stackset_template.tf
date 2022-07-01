@@ -9,6 +9,9 @@ locals {
         },
          "ExpelAssumeRoleARN" : {
             "Type" : "String"
+        },
+        "ExpelRoleName" : {
+            "Type" : "String"
         }
     },
     "Resources": {
@@ -20,7 +23,7 @@ locals {
                         "Ref": "IAMMP12SQ7"
                     }
                 ],
-                "RoleName": "ExpelRole",
+                "RoleName": { "Ref": "ExpelRoleName" },
                 "AssumeRolePolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
