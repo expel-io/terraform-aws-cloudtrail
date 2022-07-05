@@ -66,7 +66,7 @@ data "aws_iam_policy_document" "assume_role_iam_document" {
 }
 
 resource "aws_iam_role" "expel_assume_role" {
-  name               = "ExpelServiceAssumeRole"
+  name               = "ExpelTrailAssumeRole"
   assume_role_policy = data.aws_iam_policy_document.assume_role_iam_document.json
 
   tags = local.tags
