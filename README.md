@@ -41,8 +41,8 @@ See https://support.expel.io/hc/en-us/articles/360061333154-AWS-CloudTrail-getti
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.12.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.1.3 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.3.2 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -76,7 +76,6 @@ See https://support.expel.io/hc/en-us/articles/360061333154-AWS-CloudTrail-getti
 | [aws_cloudformation_stack_set_instance.permeate_account_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudformation_stack_set_instance) | resource |
 | [aws_cloudtrail.cloudtrail](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudtrail) | resource |
 | [aws_iam_policy.cloudtrail_manager_iam_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
-| [aws_iam_role.AWSCloudFormationStackSetAdministrationRole](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.expel_assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy_attachment.cloudtrail_manager_role_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_kms_key.cloudtrail_bucket_encryption_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
@@ -97,7 +96,6 @@ See https://support.expel.io/hc/en-us/articles/360061333154-AWS-CloudTrail-getti
 | [aws_sqs_queue_policy.sqs_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue_policy) | resource |
 | [random_uuid.cloudtrail_bucket_name](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/uuid) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_iam_policy_document.AWSCloudFormationStackSetAdministrationRole_assume_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.assume_role_iam_document](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.cloudtrail_bucket_iam_document](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.cloudtrail_key_policy_document](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
