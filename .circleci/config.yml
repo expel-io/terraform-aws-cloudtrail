@@ -70,6 +70,7 @@ jobs:
             tar -xzf terraform-docs.tar.gz
             chmod +x terraform-docs
             sudo mv terraform-docs /bin/terraform-docs
+            rm terraform-docs.tar.gz
             pip install pre-commit
             pre-commit install
             pre-commit run --all-files
