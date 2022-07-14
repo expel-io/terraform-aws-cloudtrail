@@ -5,9 +5,17 @@ orbs:
   terraform: circleci/terraform@3.0.0
 
 workflows:
-  validate-and-security-scan:
+  quality-check:
     jobs:
       - checkout-code:
+          filters:
+            branches:
+              only:
+                - /.*/
+            tags:
+              ignore:
+                - /.*/
+      - pre-commit:
           filters:
             branches:
               only:
@@ -46,6 +54,16 @@ jobs:
           root: .
           paths:
             - "./*"
+  pre-commit:
+    docker:
+      - image: cimg/python:3.10.5
+    steps:
+      - attach_workspace:
+          at: .
+      - run: |
+          pip install pre-commit
+          pre-commit install
+          pre-commit run --files $$(git diff --name-only origin)
   validate:
     executor:
       name: terraform/default
