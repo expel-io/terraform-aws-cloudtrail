@@ -63,9 +63,9 @@ jobs:
       - attach_workspace:
           at: .
       - run: |
-          pip install pre-commit
+          pip install gitpython pre-commit
           pre-commit install
-          pre-commit run
+          pre-commit run --files $$(git diff --name-only origin)
   validate:
     executor:
       name: terraform/default
