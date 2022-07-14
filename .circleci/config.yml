@@ -37,6 +37,7 @@ workflows:
                 - /.*/
       - security-scan:
           requires:
+            - pre-commit
             - validate
           filters:
             branches:
