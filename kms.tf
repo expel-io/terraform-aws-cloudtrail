@@ -76,4 +76,3 @@ resource "aws_kms_key" "cloudtrail_bucket_encryption_key" {
   policy              = data.aws_iam_policy_document.cloudtrail_key_policy_document.json
   tags                = local.tags
 }
-
