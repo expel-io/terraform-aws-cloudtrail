@@ -16,6 +16,8 @@ workflows:
               ignore:
                 - /.*/
       - pre-commit:
+          requires:
+            - checkout-code
           filters:
             branches:
               only:
@@ -61,9 +63,9 @@ jobs:
       - attach_workspace:
           at: .
       - run: |
-          pip install git pre-commit
+          pip install pre-commit
           pre-commit install
-          pre-commit run --files $$(git diff --name-only origin)
+          pre-commit run
   validate:
     executor:
       name: terraform/default
