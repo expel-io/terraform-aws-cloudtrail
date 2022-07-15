@@ -5,9 +5,19 @@ orbs:
   terraform: circleci/terraform@3.0.0
 
 workflows:
-  validate-and-security-scan:
+  quality-check:
     jobs:
       - checkout-code:
+          filters:
+            branches:
+              only:
+                - /.*/
+            tags:
+              ignore:
+                - /.*/
+      - pre-commit:
+          requires:
+            - checkout-code
           filters:
             branches:
               only:
@@ -27,6 +37,7 @@ workflows:
                 - /.*/
       - security-scan:
           requires:
+            - pre-commit
             - validate
           filters:
             branches:
@@ -46,6 +57,23 @@ jobs:
           root: .
           paths:
             - "./*"
+  pre-commit:
+    docker:
+      - image: cimg/python:3.10.5
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: install & run pre-commit tests
+          command: |
+            curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/v0.16.0/terraform-docs-v0.16.0-Linux-amd64.tar.gz
+            tar -xzf terraform-docs.tar.gz
+            chmod +x terraform-docs
+            sudo mv terraform-docs /bin/terraform-docs
+            rm terraform-docs.tar.gz
+            pip install pre-commit
+            pre-commit install
+            pre-commit run --all-files
   validate:
     executor:
       name: terraform/default
