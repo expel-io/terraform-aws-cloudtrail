@@ -5,7 +5,10 @@ data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
     effect = "Allow"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${local.customer_aws_account_id}:root"]
+      identifiers = [
+        "arn:aws:iam::${local.customer_aws_account_id}:root",
+        "${data.aws_caller_identity.current}"
+      ]
     }
     actions   = ["kms:*"]
     resources = ["*"]
