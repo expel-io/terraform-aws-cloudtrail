@@ -7,7 +7,7 @@ data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
       type        = "AWS"
       identifiers = [
         "arn:aws:iam::${local.customer_aws_account_id}:root",
-        "${data.aws_caller_identity.current}"
+        data.aws_caller_identity.current.arn
       ]
     }
     actions   = ["kms:*"]
