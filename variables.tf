@@ -16,7 +16,7 @@ variable "expel_assume_role_session_name" {
 }
 
 variable "enable_organization_trail" {
-  description = "When enabled, log events for the management account and all member accounts."
+  description = "When enabled, log events for the management account and all member accounts, and permeate IAM policies in all member accounts for Expel to get basic read permissions of resources in order to investigate alerts."
   type        = bool
   default     = false
 }
