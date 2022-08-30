@@ -11,7 +11,6 @@ module "expel_aws_cloudtrail" {
   version = "1.2.2"
 
   expel_customer_organization_guid = "Replace with your organization GUID from Expel Workbench"
-  customer_aws_account_id = "AWS account id where all the resources will be created (management account id if organization cloudtrail is enabled)"
   region = "AWS region in which notification queue for CloudTrail will be created"
 }
 ```
@@ -49,7 +48,6 @@ See https://support.expel.io/hc/en-us/articles/360061333154-AWS-CloudTrail-getti
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_customer_aws_account_id"></a> [customer\_aws\_account\_id](#input\_customer\_aws\_account\_id) | Customer's AWS account id. This should be the management account id if organization trail is enabled. | `string` | n/a | yes |
 | <a name="input_expel_customer_organization_guid"></a> [expel\_customer\_organization\_guid](#input\_expel\_customer\_organization\_guid) | Expel customer's organization GUID assigned to you by Expel. You can find it in your browser URL after navigating to Settings > My Organization in Workbench. | `string` | n/a | yes |
 | <a name="input_enable_access_logging_bucket_encryption"></a> [enable\_access\_logging\_bucket\_encryption](#input\_enable\_access\_logging\_bucket\_encryption) | Enable to encrypt objects in the access logging bucket. | `bool` | `true` | no |
 | <a name="input_enable_bucket_access_logging"></a> [enable\_bucket\_access\_logging](#input\_enable\_bucket\_access\_logging) | Access logging provides detailed records for the requests that are made to an Amazon S3 bucket. | `bool` | `true` | no |
@@ -60,6 +58,7 @@ See https://support.expel.io/hc/en-us/articles/360061333154-AWS-CloudTrail-getti
 | <a name="input_enable_sqs_encryption"></a> [enable\_sqs\_encryption](#input\_enable\_sqs\_encryption) | Enable server-side encryption (SSE) of message content with SQS-owned encryption keys. | `bool` | `true` | no |
 | <a name="input_expel_assume_role_session_name"></a> [expel\_assume\_role\_session\_name](#input\_expel\_assume\_role\_session\_name) | The session name Expel will use when authenticating. | `string` | `"ExpelCloudTrailServiceSession"` | no |
 | <a name="input_expel_aws_account_arn"></a> [expel\_aws\_account\_arn](#input\_expel\_aws\_account\_arn) | Expel's AWS Account ARN to allow assuming role to gain CloudTrail access. | `string` | `"arn:aws:iam::012205512454:user/ExpelCloudService"` | no |
+| <a name="input_expel_customer_aws_account_id"></a> [expel\_customer\_aws\_account\_id](#input\_expel\_customer\_aws\_account\_id) | Account id of customer's AWS account that will be monitored by Expel if it is different than the one terraform is using. This should be the management account id if organization trail is enabled. | `string` | `null` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | A prefix to group all Expel integration resources. | `string` | `"expel-aws-cloudtrail"` | no |
 | <a name="input_queue_message_retention_days"></a> [queue\_message\_retention\_days](#input\_queue\_message\_retention\_days) | The visibility timeout for the queue. See: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html | `number` | `7` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A set of tags to group resources. | `map` | `{}` | no |

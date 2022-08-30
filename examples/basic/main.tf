@@ -15,7 +15,6 @@ module "expel_aws_cloudtrail_integration" {
   source = "../../"
 
   expel_customer_organization_guid = var.expel_customer_organization_guid
-  customer_aws_account_id          = var.customer_aws_account_id
   expel_assume_role_session_name   = "ExpelServiceAssumeRoleForCloudTrailAccess"
   queue_message_retention_days     = 10
 
