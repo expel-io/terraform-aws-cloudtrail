@@ -5,7 +5,7 @@ data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
     effect = "Allow"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${local.customer_aws_account_id}:root"]
+      identifiers = ["arn:aws:iam::${var.customer_aws_account_id}:root"]
     }
     actions   = ["kms:*"]
     resources = ["*"]
@@ -23,12 +23,12 @@ data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:cloudtrail:arn"
-      values   = ["arn:aws:cloudtrail:*:${local.customer_aws_account_id}:trail/*"]
+      values   = ["arn:aws:cloudtrail:*:${var.customer_aws_account_id}:trail/*"]
     }
     condition {
       test     = "StringEquals"
       variable = "aws:SourceArn"
-      values   = ["arn:aws:cloudtrail:${local.region}:${local.customer_aws_account_id}:trail/${var.prefix}-trail"]
+      values   = ["arn:aws:cloudtrail:${local.region}:${var.customer_aws_account_id}:trail/${var.prefix}-trail"]
     }
   }
 
@@ -44,7 +44,7 @@ data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
     condition {
       test     = "StringEquals"
       variable = "aws:SourceArn"
-      values   = ["arn:aws:cloudtrail:${local.region}:${local.customer_aws_account_id}:trail/${var.prefix}-trail"]
+      values   = ["arn:aws:cloudtrail:${local.region}:${var.customer_aws_account_id}:trail/${var.prefix}-trail"]
     }
   }
 
@@ -65,7 +65,7 @@ data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
     condition {
       test     = "StringEquals"
       variable = "aws:SourceAccount"
-      values   = ["${local.customer_aws_account_id}"]
+      values   = ["${var.customer_aws_account_id}"]
     }
   }
 }

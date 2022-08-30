@@ -8,9 +8,10 @@ Configures a CloudTrail stack (CloudTrail & S3 bucket) with a notification queue
 ```hcl
 module "expel_aws_cloudtrail" {
   source  = "expel-io/cloudtrail/aws"
-  version = "1.2.1"
+  version = "1.2.2"
 
   expel_customer_organization_guid = "Replace with your organization GUID from Expel Workbench"
+  customer_aws_account_id = "AWS account id where all the resources will be created (management account id if organization cloudtrail is enabled)"
   region = "AWS region in which notification queue for CloudTrail will be created"
 }
 ```
@@ -48,6 +49,7 @@ See https://support.expel.io/hc/en-us/articles/360061333154-AWS-CloudTrail-getti
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_customer_aws_account_id"></a> [customer\_aws\_account\_id](#input\_customer\_aws\_account\_id) | Customer's AWS account id. This should be the management account id if organization trail is enabled. | `string` | n/a | yes |
 | <a name="input_expel_customer_organization_guid"></a> [expel\_customer\_organization\_guid](#input\_expel\_customer\_organization\_guid) | Expel customer's organization GUID assigned to you by Expel. You can find it in your browser URL after navigating to Settings > My Organization in Workbench. | `string` | n/a | yes |
 | <a name="input_enable_access_logging_bucket_encryption"></a> [enable\_access\_logging\_bucket\_encryption](#input\_enable\_access\_logging\_bucket\_encryption) | Enable to encrypt objects in the access logging bucket. | `bool` | `true` | no |
 | <a name="input_enable_bucket_access_logging"></a> [enable\_bucket\_access\_logging](#input\_enable\_bucket\_access\_logging) | Access logging provides detailed records for the requests that are made to an Amazon S3 bucket. | `bool` | `true` | no |

@@ -3,6 +3,15 @@ variable "expel_customer_organization_guid" {
   type        = string
 }
 
+variable "customer_aws_account_id" {
+  description = "Customer's AWS account id. This should be the management account id if organization trail is enabled."
+  type        = string
+  validation {
+    condition     = can(regex("^[0-9]{12}$", var.customer_aws_account_id))
+    error_message = "Account id must be 12 digits."
+  }
+}
+
 variable "expel_aws_account_arn" {
   description = "Expel's AWS Account ARN to allow assuming role to gain CloudTrail access."
   type        = string
