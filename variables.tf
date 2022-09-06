@@ -3,6 +3,16 @@ variable "expel_customer_organization_guid" {
   type        = string
 }
 
+variable "expel_customer_aws_account_id" {
+  description = "Account id of customer's AWS account that will be monitored by Expel if it is different than the one terraform is using. This should be the management account id if organization trail is enabled."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.expel_customer_aws_account_id == null || can(regex("^[0-9]{12}$", coalesce(var.expel_customer_aws_account_id, "")))
+    error_message = "Account id must be 12 digits."
+  }
+}
+
 variable "expel_aws_account_arn" {
   description = "Expel's AWS Account ARN to allow assuming role to gain CloudTrail access."
   type        = string
