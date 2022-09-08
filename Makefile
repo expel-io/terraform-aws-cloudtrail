@@ -1,5 +1,5 @@
 docs:
-	terraform-docs ./
+	terraform-docs .
 
 precommit_test:
 	pre-commit install

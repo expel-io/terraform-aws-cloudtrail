@@ -1,5 +1,7 @@
 # Key policies for cloudtrail key
 data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
+  count = var.existing_cloudtrail_bucket_name == null ? 1 : 0
+
   statement {
     sid    = "Enable IAM User Permissions"
     effect = "Allow"
@@ -49,7 +51,7 @@ data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
   }
 
   statement {
-    sid    = "Allow cloudtrail bucket to encrypt/decrypt SQS queue"
+    sid    = "Allow CloudTrail bucket to encrypt/decrypt logs"
     effect = "Allow"
     principals {
       type        = "Service"
@@ -60,19 +62,73 @@ data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
     condition {
       test     = "StringLike"
       variable = "aws:SourceArn"
-      values   = ["arn:aws:s3:::${var.prefix}-${random_uuid.cloudtrail_bucket_name.result}"]
+      values   = [local.cloudtrail_bucket_arn]
     }
     condition {
       test     = "StringEquals"
       variable = "aws:SourceAccount"
-      values   = ["${local.customer_aws_account_id}"]
+      values   = [local.customer_aws_account_id]
     }
   }
 }
 
 resource "aws_kms_key" "cloudtrail_bucket_encryption_key" {
-  description         = "This key is used to encrypt cloudtrail bucket & SQS queue."
+  count = var.existing_cloudtrail_bucket_name == null ? 1 : 0
+
+  description         = "This key is used to encrypt cloudtrail bucket."
   enable_key_rotation = var.enable_bucket_encryption_key_rotation
-  policy              = data.aws_iam_policy_document.cloudtrail_key_policy_document.json
+  policy              = data.aws_iam_policy_document.cloudtrail_key_policy_document[0].json
+  tags                = local.tags
+}
+
+data "aws_iam_policy_document" "notification_key_policy_document" {
+  statement {
+    sid    = "Enable IAM User Permissions"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.customer_aws_account_id}:root"]
+    }
+    actions   = ["kms:*"]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "Allow CloudTrail bucket to encrypt/decrypt logs"
+    effect = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["s3.amazonaws.com"]
+    }
+    actions   = ["kms:GenerateDataKey", "kms:Decrypt"]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceArn"
+      values   = [local.cloudtrail_bucket_arn]
+    }
+  }
+
+  statement {
+    sid    = "Allow SNS service to encrypt/decrypt"
+    effect = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["sns.amazonaws.com"]
+    }
+    actions   = ["kms:GenerateDataKey*", "kms:Decrypt"]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceArn"
+      values   = [local.cloudtrail_sns_topic_arn]
+    }
+  }
+}
+
+resource "aws_kms_key" "notification_encryption_key" {
+  description         = "This key is used to encrypt SNS topic & SQS queue."
+  enable_key_rotation = var.enable_bucket_encryption_key_rotation
+  policy              = data.aws_iam_policy_document.notification_key_policy_document.json
   tags                = local.tags
 }
