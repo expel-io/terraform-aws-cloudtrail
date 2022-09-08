@@ -30,10 +30,10 @@ provider "aws" {
 module "expel_aws_cloudtrail_integration" {
   source = "../../"
 
-  expel_customer_organization_guid       = var.expel_customer_organization_guid
-  existing_cloudtrail_bucket_name        = var.existing_cloudtrail_bucket_name
-  existing_cloudtrail_kms_key_arn = var.existing_cloudtrail_kms_key_arn
-  existing_sns_topic_arn                 = var.existing_sns_topic_arn
+  expel_customer_organization_guid = var.expel_customer_organization_guid
+  existing_cloudtrail_bucket_name  = var.existing_cloudtrail_bucket_name
+  existing_cloudtrail_kms_key_arn  = var.existing_cloudtrail_kms_key_arn
+  existing_sns_topic_arn           = var.existing_sns_topic_arn
 
   tags = {
     "is_external" = "true"
