@@ -63,7 +63,7 @@ variable "existing_cloudtrail_kms_key_arn" {
 }
 
 variable "existing_sns_topic_arn" {
-  description = "The ARN of the existing SNS Topic configured to be notified by the existing CloudTrail bucket"
+  description = "The ARN of the existing SNS Topic configured to be notified by the existing CloudTrail bucket. The S3 bucket notification configuration must have the s3:ObjectCreated:* event type checked."
   type        = string
   default     = null
 }
