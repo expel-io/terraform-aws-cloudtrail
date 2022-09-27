@@ -2,7 +2,7 @@
 Terraform module for configuring AWS to integrate with [Expel Workbench](https://workbench.expel.io/).
 
 Configures a CloudTrail stack (CloudTrail & S3 bucket) with a notification queue that
-[Expel Workbench](https://workbench.expel.io/) consumes. Cloudtrail, S3 bucket and SQS queue are encrypted by default using a custom managed KMS key.
+[Expel Workbench](https://workbench.expel.io/) consumes. Cloudtrail, S3 bucket, SQS and SNS (optionally for existing Cloudtrail) queue are encrypted by default using a custom managed KMS key.
 
 ## Usage
 ```hcl
@@ -22,13 +22,14 @@ security device to enable Expel to begin monitoring your AWS environment.
 The permissions allocated by this module allow Expel Workbench to perform investigations and get a broad understanding of your AWS footprint.
 
 ## Use Cases
-1. Creating a new AWS CloudTrail for a single AWS account
-2. Creating a new AWS CloudTrial for an AWS organization (Set [enable\_organization\_trail](#input\_enable\_organization\_trail) input to true)
+1. Creating a new AWS CloudTrial for an AWS organization (default)
+2. Creating a new AWS CloudTrail for a single AWS account (Set [enable\_organization\_trail](#input\_enable\_organization\_trail) input to false)
+3. Reuse an existing AWS Cloudtrail for a single AWS account or an AWS organization with all the existing resources deployed in the same account (Set [existing\_cloudtrail\_bucket\_name](#input\_existing\_cloudtrail\_bucket\_name) input to the name of the existing log bucket)
 
 ## Limitations
-Will always create a new CloudTrail, does not support re-using an existing CloudTrail.
+Supports new Cloudtrail & existing Cloudtrail with all the necessary resources deployed in the same account (ie does not support environment with cross account resources).
 
-See https://support.expel.io/hc/en-us/articles/360061333154-AWS-CloudTrail-getting-started-guide for options if you have a CloudTrail you want to re-use.
+Please contact you Engagement Manager if you have an existing CloudTrail with a different configuration.
 
 <!-- begin-tf-docs -->
 ## Requirements
@@ -48,7 +49,7 @@ See https://support.expel.io/hc/en-us/articles/360061333154-AWS-CloudTrail-getti
 | <a name="input_enable_bucket_encryption_key_rotation"></a> [enable\_bucket\_encryption\_key\_rotation](#input\_enable\_bucket\_encryption\_key\_rotation) | If `enable_s3_encryption` is set to true, enabling key rotation will rotate the KMS keys used for S3 bucket encryption. | `bool` | `true` | no |
 | <a name="input_enable_bucket_versioning"></a> [enable\_bucket\_versioning](#input\_enable\_bucket\_versioning) | Enable to protect against accidental/malicious removal or modification of S3 objects. | `bool` | `true` | no |
 | <a name="input_enable_cloudtrail_log_file_validation"></a> [enable\_cloudtrail\_log\_file\_validation](#input\_enable\_cloudtrail\_log\_file\_validation) | Validates that a log file was not modified, deleted, or unchanged after CloudTrail delivered it. | `bool` | `true` | no |
-| <a name="input_enable_organization_trail"></a> [enable\_organization\_trail](#input\_enable\_organization\_trail) | When enabled, log events for the management account and all member accounts, and permeate IAM policies in all member accounts for Expel to get basic read permissions of resources in order to investigate alerts. | `bool` | `false` | no |
+| <a name="input_enable_organization_trail"></a> [enable\_organization\_trail](#input\_enable\_organization\_trail) | For customers with AWS organizations setup, log events for the management account and all member accounts, and permeate IAM policies in all member accounts for Expel to get basic read permissions of resources in order to investigate alerts. Set to false if you want to onboard a single AWS account | `bool` | `true` | no |
 | <a name="input_enable_sqs_encryption"></a> [enable\_sqs\_encryption](#input\_enable\_sqs\_encryption) | Enable server-side encryption (SSE) of message content with SQS-owned encryption keys. | `bool` | `true` | no |
 | <a name="input_existing_cloudtrail_bucket_name"></a> [existing\_cloudtrail\_bucket\_name](#input\_existing\_cloudtrail\_bucket\_name) | The name of the existing bucket connected to the existing CloudTrail | `string` | `null` | no |
 | <a name="input_existing_cloudtrail_kms_key_arn"></a> [existing\_cloudtrail\_kms\_key\_arn](#input\_existing\_cloudtrail\_kms\_key\_arn) | The ARN of the KMS key used to encrypt existing CloudTrail bucket | `string` | `null` | no |

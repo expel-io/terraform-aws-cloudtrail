@@ -44,9 +44,9 @@ variable "expel_assume_role_session_name" {
 }
 
 variable "enable_organization_trail" {
-  description = "When enabled, log events for the management account and all member accounts, and permeate IAM policies in all member accounts for Expel to get basic read permissions of resources in order to investigate alerts."
+  description = "For customers with AWS organizations setup, log events for the management account and all member accounts, and permeate IAM policies in all member accounts for Expel to get basic read permissions of resources in order to investigate alerts. Set to false if you want to onboard a single AWS account"
   type        = bool
-  default     = false
+  default     = true
 }
 
 /* --- Set these variables to support CloudTrail configuration --- */

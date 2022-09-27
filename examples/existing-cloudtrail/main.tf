@@ -21,6 +21,7 @@ variable "existing_cloudtrail_kms_key_arn" {
 variable "existing_sns_topic_arn" {
   description = "Use your AWS CloudTrail SNS Topic ARN"
   type        = string
+  default     = null
 }
 
 provider "aws" {
