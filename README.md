@@ -29,7 +29,7 @@ The permissions allocated by this module allow Expel Workbench to perform invest
 ## Limitations
 Supports new Cloudtrail & existing Cloudtrail with all the necessary resources deployed in the same account (ie does not support environment with cross account resources).
 
-Please contact you Engagement Manager if you have an existing CloudTrail with a different configuration.
+Please contact your Engagement Manager if you have an existing CloudTrail with a different configuration.
 
 <!-- begin-tf-docs -->
 ## Requirements
