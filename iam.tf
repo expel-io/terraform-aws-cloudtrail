@@ -1,17 +1,13 @@
 resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
-  count = var.existing_cloudtrail_bucket_name == null ? 1 : 0
-
-  bucket = aws_s3_bucket.cloudtrail_bucket[0].bucket
-  policy = data.aws_iam_policy_document.cloudtrail_bucket_iam_document[0].json
+  bucket = aws_s3_bucket.cloudtrail_bucket.bucket
+  policy = data.aws_iam_policy_document.cloudtrail_bucket_iam_document.json
 }
 
 data "aws_iam_policy_document" "cloudtrail_bucket_iam_document" {
-  count = var.existing_cloudtrail_bucket_name == null ? 1 : 0
-
   # Necessary to allow any bucket permissions
   statement {
     actions   = ["s3:GetBucketAcl"]
-    resources = [aws_s3_bucket.cloudtrail_bucket[0].arn]
+    resources = [aws_s3_bucket.cloudtrail_bucket.arn]
     effect    = "Allow"
     principals {
       type        = "Service"
@@ -23,7 +19,7 @@ data "aws_iam_policy_document" "cloudtrail_bucket_iam_document" {
   statement {
     actions = ["s3:PutObject"]
     resources = [
-      "${aws_s3_bucket.cloudtrail_bucket[0].arn}/*"
+      "${aws_s3_bucket.cloudtrail_bucket.arn}/*"
     ]
     effect = "Allow"
     principals {
@@ -35,23 +31,18 @@ data "aws_iam_policy_document" "cloudtrail_bucket_iam_document" {
 
 resource "aws_sqs_queue_policy" "sqs_bucket_policy" {
   queue_url = aws_sqs_queue.cloudtrail_queue.id
-  policy    = data.aws_iam_policy_document.sns_queue_iam_document.json
+  policy    = data.aws_iam_policy_document.sqs_bucket_iam_document.json
 }
 
-data "aws_iam_policy_document" "sns_queue_iam_document" {
-  # Allow SNS to send messages to Queue
+data "aws_iam_policy_document" "sqs_bucket_iam_document" {
+  # Allow S3 to queue messages onto SQS
   statement {
-    actions   = ["sqs:SendMessage", "sqs:SendMessageBatch"]
+    actions   = ["sqs:SendMessage"]
     resources = [aws_sqs_queue.cloudtrail_queue.arn]
     effect    = "Allow"
-    condition {
-      test     = "ArnEquals"
-      variable = "aws:SourceArn"
-      values   = [local.cloudtrail_sns_topic_arn]
-    }
     principals {
       type        = "Service"
-      identifiers = ["sns.amazonaws.com"]
+      identifiers = ["s3.amazonaws.com"]
     }
   }
 }
@@ -99,7 +90,7 @@ data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
   # Allow Expel Workbench to get objects from cloudtrail bucket
   statement {
     actions   = ["s3:GetObject"]
-    resources = ["${local.cloudtrail_bucket_arn}/*"]
+    resources = ["${aws_s3_bucket.cloudtrail_bucket.arn}/*"]
     effect    = "Allow"
   }
 
@@ -114,19 +105,9 @@ data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
   }
 
   # Allow Expel Workbench to decrypt cloudtrail bucket
-  dynamic "statement" {
-    for_each = local.cloudtrail_bucket_encryption_key_arn == null ? [] : [1]
-    content {
-      actions   = ["kms:Decrypt"]
-      resources = [local.cloudtrail_bucket_encryption_key_arn]
-      effect    = "Allow"
-    }
-  }
-
-  # Allow Expel Workbench to decrypt notifications
   statement {
     actions   = ["kms:Decrypt"]
-    resources = [aws_kms_key.notification_encryption_key.arn]
+    resources = [aws_kms_key.cloudtrail_bucket_encryption_key.arn]
     effect    = "Allow"
   }
 
