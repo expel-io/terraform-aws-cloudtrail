@@ -1,3 +1,21 @@
+/* --- Set these to keep track of the effects of this module in your AWS infrastructure --- */
+variable "prefix" {
+  description = "A prefix to group all Expel integration resources."
+  type        = string
+  default     = "expel-aws-cloudtrail"
+
+  validation {
+    condition     = length(var.prefix) <= 26
+    error_message = "Prefix value must be 26 characters or less."
+  }
+}
+
+variable "tags" {
+  description = "A set of tags to group resources."
+  default     = {}
+}
+
+/* --- Set these variables to enable connection with Expel Workbench --- */
 variable "expel_customer_organization_guid" {
   description = "Expel customer's organization GUID assigned to you by Expel. You can find it in your browser URL after navigating to Settings > My Organization in Workbench."
   type        = string
@@ -26,25 +44,28 @@ variable "expel_assume_role_session_name" {
 }
 
 variable "enable_organization_trail" {
-  description = "When enabled, log events for the management account and all member accounts, and permeate IAM policies in all member accounts for Expel to get basic read permissions of resources in order to investigate alerts."
+  description = "For customers with AWS organizations setup, log events for the management account and all member accounts, and permeate IAM policies in all member accounts for Expel to get basic read permissions of resources in order to investigate alerts. Set to false if you want to onboard a single AWS account"
   type        = bool
-  default     = false
+  default     = true
 }
 
-variable "prefix" {
-  description = "A prefix to group all Expel integration resources."
+/* --- Set these variables to support CloudTrail configuration --- */
+variable "existing_cloudtrail_bucket_name" {
+  description = "The name of the existing bucket connected to the existing CloudTrail"
   type        = string
-  default     = "expel-aws-cloudtrail"
-
-  validation {
-    condition     = length(var.prefix) <= 26
-    error_message = "Prefix value must be 26 characters or less."
-  }
+  default     = null
 }
 
-variable "tags" {
-  description = "A set of tags to group resources."
-  default     = {}
+variable "existing_cloudtrail_kms_key_arn" {
+  description = "The ARN of the KMS key used to encrypt existing CloudTrail bucket"
+  type        = string
+  default     = null
+}
+
+variable "existing_sns_topic_arn" {
+  description = "The ARN of the existing SNS Topic configured to be notified by the existing CloudTrail bucket. The S3 bucket notification configuration must have the s3:ObjectCreated:* event type checked."
+  type        = string
+  default     = null
 }
 
 variable "queue_message_retention_days" {
@@ -59,6 +80,7 @@ variable "enable_sqs_encryption" {
   default     = true
 }
 
+/* --- Set these variables to support new CloudTrail configuration --- */
 variable "enable_cloudtrail_log_file_validation" {
   description = "Validates that a log file was not modified, deleted, or unchanged after CloudTrail delivered it."
   type        = bool

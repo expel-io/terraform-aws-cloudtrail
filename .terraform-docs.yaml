@@ -6,7 +6,6 @@ sort:
 
 content: |-
   {{ .Requirements }}
-  {{ .Providers }}
   {{ .Inputs }}
   {{ .Outputs }}
   {{ .Resources }}
