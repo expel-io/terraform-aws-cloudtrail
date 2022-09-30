@@ -1,6 +1,8 @@
 data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
-data "aws_organizations_organization" "current" {}
+data "aws_organizations_organization" "current" {
+    count = var.enable_organization_trail ? 1 : 0
+}
 
 locals {
   default_tags = {
