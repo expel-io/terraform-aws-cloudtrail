@@ -78,7 +78,9 @@ locals {
                                 "organizations:ListAccounts",
                                 "rds:DescribeDBInstances",
                                 "rds:ListTagsForResource",
-                                "s3:ListAllMyBuckets"
+                                "s3:ListAllMyBuckets",
+                                "s3:GetBucketNotification",
+                                "s3:GetEncryptionConfiguration"
                             ],
                             "Resource": "*"
                         }
