@@ -136,6 +136,8 @@ data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
     actions = [
       "cloudtrail:DescribeTrails",
       "cloudtrail:GetTrailStatus",
+      "cloudtrail:ListTrails",
+      "cloudtrail:GetTrail",
       "config:GetDiscoveredResourceCounts",
       "config:ListDiscoveredResources",
       "ec2:DescribeInstances",
@@ -159,7 +161,9 @@ data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
       "organizations:ListAccounts",
       "rds:DescribeDBInstances",
       "rds:ListTagsForResource",
-      "s3:ListAllMyBuckets"
+      "s3:ListAllMyBuckets",
+      "s3:GetBucketNotification",
+      "s3:GetEncryptionConfiguration"
     ]
     resources = ["*"]
     effect    = "Allow"
