@@ -55,6 +55,8 @@ locals {
                             "Action": [
                                 "cloudtrail:DescribeTrails",
                                 "cloudtrail:GetTrailStatus",
+                                "cloudtrail:ListTrails",
+                                "cloudtrail:GetTrail",
                                 "config:GetDiscoveredResourceCounts",
                                 "config:ListDiscoveredResources",
                                 "ec2:DescribeInstances",
