@@ -59,6 +59,7 @@ Please contact your Engagement Manager if you have an existing CloudTrail with a
 | <a name="input_expel_customer_aws_account_id"></a> [expel\_customer\_aws\_account\_id](#input\_expel\_customer\_aws\_account\_id) | Account id of customer's AWS account that will be monitored by Expel if it is different than the one terraform is using. This should be the management account id if organization trail is enabled. | `string` | `null` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | A prefix to group all Expel integration resources. | `string` | `"expel-aws-cloudtrail"` | no |
 | <a name="input_queue_message_retention_days"></a> [queue\_message\_retention\_days](#input\_queue\_message\_retention\_days) | The visibility timeout for the queue. See: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html | `number` | `7` | no |
+| <a name="input_stackset_fault_tolerance_count"></a> [stackset\_fault\_tolerance\_count](#input\_stackset\_fault\_tolerance\_count) | The number of accounts, per Region, for which stackset deployment operation can fail before AWS CloudFormation stops the operation in that Region. | `number` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A set of tags to group resources. | `map` | `{}` | no |
 ## Outputs
 
