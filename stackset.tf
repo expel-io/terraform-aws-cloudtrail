@@ -29,6 +29,10 @@ resource "aws_cloudformation_stack_set_instance" "permeate_account_policy" {
     organizational_unit_ids = [local.customer_aws_organization_id]
   }
 
+  operation_preferences {
+    failure_tolerance_count = var.stackset_fault_tolerance_count
+  }
+
   region         = local.region
   stack_set_name = aws_cloudformation_stack_set.permeate_account_policy[0].name
 }

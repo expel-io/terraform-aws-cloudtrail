@@ -110,3 +110,9 @@ variable "enable_bucket_encryption_key_rotation" {
   type        = bool
   default     = true
 }
+
+variable "stackset_fault_tolerance_count" {
+  description = "The number of accounts, per Region, for which stackset deployment operation can fail before AWS CloudFormation stops the operation in that Region."
+  type        = number
+  default     = null
+}
