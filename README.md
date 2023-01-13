@@ -35,7 +35,7 @@ The permissions allocated by this module allow Expel Workbench to perform invest
 
 - This module only supports integrating with Expel when all the necessary resources are deployed in the same account.
 - This module **does not** support integrating with Expel when all the necessary resources are deployed across multiple aws accounts.
-  - Ex. ControlTower Environments are **not supported** via this module. To integrate an AWS ControlTower environment with Expel refer to this [guide](https://support.expel.io/hc/en-us/articles/12391858961171-AWS-CloudTrail-Existing-CloudTrail-with-Control-Tower-setup-for-Workbench) in order to do so.
+  > Ex. ControlTower Environments are **not supported** via this module. To integrate an AWS ControlTower environment with Expel refer to this [guide](https://support.expel.io/hc/en-us/articles/12391858961171-AWS-CloudTrail-Existing-CloudTrail-with-Control-Tower-setup-for-Workbench) in order to do so.
 
 Please contact your Engagement Manager if you have an existing CloudTrail with a different configuration.
 
