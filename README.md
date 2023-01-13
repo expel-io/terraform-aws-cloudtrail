@@ -1,10 +1,12 @@
 # terraform-aws-cloudtrail
+
 Terraform module for configuring AWS to integrate with [Expel Workbench](https://workbench.expel.io/).
 
 Configures a CloudTrail stack (CloudTrail & S3 bucket) with a notification queue that
 [Expel Workbench](https://workbench.expel.io/) consumes. Cloudtrail, S3 bucket, SQS and SNS (optionally for existing Cloudtrail) queue are encrypted by default using a custom managed KMS key.
 
 ## Usage
+
 ```hcl
 module "expel_aws_cloudtrail" {
   source  = "expel-io/cloudtrail/aws"
@@ -14,20 +16,26 @@ module "expel_aws_cloudtrail" {
   region = "AWS region in which notification queue for CloudTrail will be created"
 }
 ```
+
 Once you have configured your AWS environment, go to
 https://workbench.expel.io/settings/security-devices?setupIntegration=aws and create an AWS CloudTrail
 security device to enable Expel to begin monitoring your AWS environment.
 
 ## Permissions
+
 The permissions allocated by this module allow Expel Workbench to perform investigations and get a broad understanding of your AWS footprint.
 
 ## Use Cases
-1. Creating a new AWS CloudTrial for an AWS organization (default)
-2. Creating a new AWS CloudTrail for a single AWS account (Set [enable\_organization\_trail](#input\_enable\_organization\_trail) input to false)
-3. Reuse an existing AWS Cloudtrail for a single AWS account or an AWS organization with all the existing resources deployed in the same account (Set [existing\_cloudtrail\_bucket\_name](#input\_existing\_cloudtrail\_bucket\_name) input to the name of the existing log bucket)
+
+1. Creating a new AWS CloudTrail for an AWS organization (default)
+2. Creating a new AWS CloudTrail for a single AWS account (Set [enable_organization_trail](#input_enable_organization_trail) input to false)
+3. Reusing an existing AWS Cloudtrail for a single AWS account or an AWS organization with all the existing resources deployed in the same account (Set [existing_cloudtrail_bucket_name](#input_existing_cloudtrail_bucket_name) input to the name of the existing log bucket)
 
 ## Limitations
-Supports new Cloudtrail & existing Cloudtrail with all the necessary resources deployed in the same account (ie does not support environment with cross account resources).
+
+- This module only supports integrating with Expel when all the necessary resources are deployed in the same account.
+- This module **does not** support integrating with Expel when all the necessary resources are deployed across multiple aws accounts.
+  > Ex. ControlTower Environments are **not supported** via this module. To integrate an AWS ControlTower environment with Expel refer to this [guide](https://support.expel.io/hc/en-us/articles/12391858961171-AWS-CloudTrail-Existing-CloudTrail-with-Control-Tower-setup-for-Workbench) in order to do so.
 
 Please contact your Engagement Manager if you have an existing CloudTrail with a different configuration.
 
