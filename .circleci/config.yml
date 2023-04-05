@@ -3,6 +3,7 @@ version: 2.1
 
 orbs:
   terraform: circleci/terraform@3.0.0
+  apps: expel-io/apps@1.5.0
 
 workflows:
   quality-check:
@@ -35,7 +36,8 @@ workflows:
             tags:
               ignore:
                 - /.*/
-      - security-scan:
+      - apps/scan-tf:
+          context: infra-2.0
           requires:
             - pre-commit
             - validate
@@ -85,13 +87,3 @@ jobs:
           at: .
       - terraform/fmt
       - terraform/validate
-  security-scan:
-    docker:
-      - image: aquasec/tfsec-ci:v1.19
-        user: root
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: perform security scan
-          command: tfsec .
