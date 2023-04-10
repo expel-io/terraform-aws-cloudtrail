@@ -1,3 +1,5 @@
+# ignoring to maintain parity with other cloudtrail onboarding methods
+# tfsec:ignore:aws-cloudtrail-ensure-cloudwatch-integration
 resource "aws_cloudtrail" "cloudtrail" {
   count = var.existing_cloudtrail_bucket_name == null ? 1 : 0
 
