@@ -77,6 +77,7 @@ locals {
                                 "lambda:ListFunctions",
                                 "lightsail:GetInstances",
                                 "lightsail:GetRegions",
+                                "organizations:DescribeOrganization",
                                 "organizations:ListAccounts",
                                 "rds:DescribeDBInstances",
                                 "rds:ListTagsForResource",

@@ -158,6 +158,7 @@ data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
       "lambda:ListFunctions",
       "lightsail:GetInstances",
       "lightsail:GetRegions",
+      "organizations:DescribeOrganization",
       "organizations:ListAccounts",
       "rds:DescribeDBInstances",
       "rds:ListTagsForResource",
