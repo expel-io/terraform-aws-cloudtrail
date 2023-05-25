@@ -12,13 +12,6 @@ resource "aws_s3_bucket" "cloudtrail_bucket" {
   tags = local.tags
 }
 
-resource "aws_s3_bucket_acl" "cloudtrail_bucket_acl" {
-  count = var.existing_cloudtrail_bucket_name == null ? 1 : 0
-
-  bucket = aws_s3_bucket.cloudtrail_bucket[0].id
-  acl    = "private"
-}
-
 resource "aws_s3_bucket_versioning" "cloudtrail_bucket_versioning" {
   count = var.existing_cloudtrail_bucket_name == null && var.enable_bucket_versioning ? 1 : 0
 
@@ -58,11 +51,28 @@ resource "aws_s3_bucket" "cloudtrail_access_log_bucket" {
   tags = local.tags
 }
 
-resource "aws_s3_bucket_acl" "cloudtrail_access_log_bucket_acl" {
+resource "aws_s3_bucket_policy" "cloudtrail_access_log_bucket_policy" {
   count = var.existing_cloudtrail_bucket_name == null && var.enable_bucket_access_logging ? 1 : 0
 
   bucket = aws_s3_bucket.cloudtrail_access_log_bucket[0].id
-  acl    = "log-delivery-write"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "LogDeliveryPermissions",
+        Effect = "Allow",
+        Principal = {
+          Service = "logs.amazonaws.com"
+        },
+        Action = ["s3:PutObject", "s3:GetBucketAcl"],
+        Resource = [
+          "arn:aws:s3:::${aws_s3_bucket.cloudtrail_access_log_bucket[0].id}/*",
+          "arn:aws:s3:::${aws_s3_bucket.cloudtrail_access_log_bucket[0].id}",
+        ]
+      }
+    ]
+  })
 }
 
 resource "aws_s3_bucket_versioning" "cloudtrail_access_log_bucket_versioning" {
