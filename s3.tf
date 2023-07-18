@@ -43,6 +43,8 @@ resource "aws_s3_bucket_logging" "cloudtrail_bucket_logging" {
   target_prefix = "log/"
 }
 
+# ignoring as the logging block is deprecated in favor of aws_s3_bucket_logging
+# tfsec:ignore:aws-s3-enable-bucket-logging
 resource "aws_s3_bucket" "cloudtrail_access_log_bucket" {
   count = var.existing_cloudtrail_bucket_name == null && var.enable_bucket_access_logging ? 1 : 0
 

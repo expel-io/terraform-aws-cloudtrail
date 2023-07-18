@@ -11,8 +11,8 @@ resource "aws_cloudformation_stack_set" "permeate_account_policy" {
   }
 
   parameters = {
-    ExpelCustomerOrganizationGUID = var.expel_customer_organization_guid,
-    ExpelAssumeRoleARN            = aws_iam_role.expel_assume_role.arn
+    ExpelCustomerOrganizationGUID = var.expel_customer_organization_guid
+    ExpelAccountARN               = var.expel_aws_account_arn
     ExpelRoleName                 = aws_iam_role.expel_assume_role.name
   }
 
