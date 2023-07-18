@@ -7,7 +7,7 @@ locals {
         "ExpelCustomerOrganizationGUID" : {
             "Type" : "String"
         },
-         "ExpelAssumeRoleARN" : {
+         "ExpelAccountARN" : {
             "Type" : "String"
         },
         "ExpelRoleName" : {
@@ -30,7 +30,7 @@ locals {
                         {
                             "Effect": "Allow",
                             "Principal": {
-                                "AWS": { "Ref": "ExpelAssumeRoleARN" }
+                                "AWS": { "Ref": "ExpelAccountARN" }
                             },
                             "Action": "sts:AssumeRole",
                             "Condition": {

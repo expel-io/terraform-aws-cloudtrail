@@ -1,3 +1,5 @@
+# ignoring to maintain parity with other cloudtrail onboarding methods
+# tfsec:ignore:aws-s3-enable-bucket-logging
 resource "random_uuid" "cloudtrail_bucket_name" {
   count = var.existing_cloudtrail_bucket_name == null ? 1 : 0
 }
