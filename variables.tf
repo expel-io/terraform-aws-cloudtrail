@@ -12,6 +12,7 @@ variable "prefix" {
 
 variable "tags" {
   description = "A set of tags to group resources."
+  type        = map(string)
   default     = {}
 }
 
@@ -31,10 +32,16 @@ variable "expel_customer_aws_account_id" {
   }
 }
 
-variable "expel_aws_account_arn" {
-  description = "Expel's AWS Account ARN to allow assuming role to gain CloudTrail access."
+variable "expel_aws_user_arn" {
+  description = "Expel's AWS User ARN to allow assuming role to gain CloudTrail access."
   type        = string
   default     = "arn:aws:iam::012205512454:user/ExpelCloudService"
+}
+
+variable "expel_assume_role_name" {
+  description = "The role name Expel will assume when authenticating."
+  type        = string
+  default     = "ExpelTrailAssumeRole"
 }
 
 variable "expel_assume_role_session_name" {
@@ -50,10 +57,34 @@ variable "enable_organization_trail" {
 }
 
 /* --- Set these variables to support CloudTrail configuration --- */
+
+variable "is_existing_cloudtrail_cross_account" {
+  description = "For an existing cloudtrail, whether the cloudtrail & the log bucket (& optinally log bucket notifier topic if existing) are in different aws accounts"
+  type        = bool
+  default     = false
+}
 variable "existing_cloudtrail_bucket_name" {
   description = "The name of the existing bucket connected to the existing CloudTrail"
   type        = string
   default     = null
+}
+
+variable "aws_mgmt_account_id" {
+  description = "Account id of customer's AWS mgmt account."
+  type        = string
+  validation {
+    condition     = var.aws_mgmt_account_id == null || can(regex("^[0-9]{12}$", var.aws_mgmt_account_id))
+    error_message = "Account id must be 12 digits."
+  }
+}
+
+variable "existing_cloudtrail_log_bucket_account_id" {
+  description = "Account id of customer's AWS account where the existing cloudtrail log bucket is created. This is where the new SQS queue will be created"
+  type        = string
+  validation {
+    condition     = var.existing_cloudtrail_log_bucket_account_id == null || can(regex("^[0-9]{12}$", var.existing_cloudtrail_log_bucket_account_id))
+    error_message = "Account id must be 12 digits."
+  }
 }
 
 variable "existing_cloudtrail_kms_key_arn" {
@@ -115,4 +146,10 @@ variable "stackset_fault_tolerance_count" {
   description = "The number of accounts, per Region, for which stackset deployment operation can fail before AWS CloudFormation stops the operation in that Region."
   type        = number
   default     = null
+}
+
+variable "stackset_max_concurrent_count" {
+  description = "The maximum number of accounts in which to perform this operation at one time. At most, this should be set to one more than `stackset_fault_tolerance_count`"
+  type        = number
+  default     = 1
 }

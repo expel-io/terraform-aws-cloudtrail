@@ -121,8 +121,10 @@ resource "aws_s3_bucket_public_access_block" "cloudtrail_access_log_bucket_publi
   restrict_public_buckets = true
 }
 
+
 resource "aws_s3_bucket_notification" "cloudtrail_bucket_notification" {
-  count = var.existing_sns_topic_arn == null ? 1 : 0
+  provider = aws.log_bucket
+  count    = var.existing_sns_topic_arn == null ? 1 : 0
 
   bucket = var.existing_cloudtrail_bucket_name == null ? aws_s3_bucket.cloudtrail_bucket[0].id : var.existing_cloudtrail_bucket_name
 

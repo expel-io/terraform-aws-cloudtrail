@@ -90,7 +90,7 @@ data "aws_iam_policy_document" "notification_key_policy_document" {
     effect = "Allow"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${local.customer_aws_account_id}:root"]
+      identifiers = var.is_existing_cloudtrail_cross_account == false ? ["arn:aws:iam::${local.customer_aws_account_id}:root"] : ["arn:aws:iam::${var.existing_cloudtrail_log_bucket_account_id}:root"]
     }
     actions   = ["kms:*"]
     resources = ["*"]
@@ -130,8 +130,11 @@ data "aws_iam_policy_document" "notification_key_policy_document" {
 }
 
 resource "aws_kms_key" "notification_encryption_key" {
+  provider            = aws.log_bucket
   description         = "This key is used to encrypt SNS topic & SQS queue."
   enable_key_rotation = var.enable_bucket_encryption_key_rotation
   policy              = data.aws_iam_policy_document.notification_key_policy_document.json
   tags                = local.tags
 }
+
+

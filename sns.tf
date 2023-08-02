@@ -3,7 +3,8 @@ resource "random_uuid" "cloudtrail_sns_topic_name" {
 }
 
 resource "aws_sns_topic" "cloudtrail_sns_topic" {
-  count = var.existing_sns_topic_arn == null ? 1 : 0
+  provider = aws.log_bucket
+  count    = var.existing_sns_topic_arn == null ? 1 : 0
 
   name              = "${var.prefix}-${random_uuid.cloudtrail_sns_topic_name[0].result}"
   display_name      = "CloudTrail SNS Topic"
@@ -11,7 +12,8 @@ resource "aws_sns_topic" "cloudtrail_sns_topic" {
 }
 
 resource "aws_sns_topic_policy" "sns_topic_policy" {
-  count = var.existing_sns_topic_arn == null ? 1 : 0
+  provider = aws.log_bucket
+  count    = var.existing_sns_topic_arn == null ? 1 : 0
 
   arn    = aws_sns_topic.cloudtrail_sns_topic[0].arn
   policy = data.aws_iam_policy_document.sns_topic_iam_document[0].json

@@ -29,7 +29,11 @@ provider "aws" {
 }
 
 module "expel_aws_cloudtrail_integration" {
-  source = "../../"
+  source = "../../../"
+
+  providers = {
+    aws.log_bucket = aws //setting the log_bucket alias to default aws provider for existing cloudtrail with resources in single account
+  }
 
   expel_customer_organization_guid = var.expel_customer_organization_guid
   existing_cloudtrail_bucket_name  = var.existing_cloudtrail_bucket_name
