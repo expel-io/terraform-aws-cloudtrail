@@ -58,7 +58,7 @@ module "expel_aws_cloudtrail_integration_x_account" {
   expel_customer_organization_guid          = var.expel_customer_organization_guid
   aws_mgmt_account_id                       = var.aws_mgmt_account_id
   existing_cloudtrail_log_bucket_account_id = var.existing_cloudtrail_log_bucket_account_id
-  existing_cloudtrail_log_bucket_name       = var.existing_cloudtrail_bucket_name
+  existing_cloudtrail_bucket_name           = var.existing_cloudtrail_bucket_name
   existing_cloudtrail_kms_key_arn           = var.existing_cloudtrail_kms_key_arn
   existing_sns_topic_arn                    = var.existing_sns_topic_arn
 

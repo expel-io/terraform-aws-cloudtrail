@@ -52,14 +52,14 @@ data "aws_iam_policy_document" "mgmt_assume_role_iam_document" {
 }
 
 resource "aws_iam_role" "mgmt_expel_assume_role" {
-  name               = "ExpelTrailAssumeRole"
-  assume_role_policy = data.aws_iam_policy_document.assume_role_iam_document.json
+  name               = var.expel_assume_role_name
+  assume_role_policy = data.aws_iam_policy_document.mgmt_assume_role_iam_document.json
 
   tags = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "cloudtrail_manager_role_policy_attachment" {
-  role       = aws_iam_role.expel_assume_role.name
+  role       = aws_iam_role.mgmt_expel_assume_role.name
   policy_arn = aws_iam_policy.cloudtrail_manager_iam_policy.arn
 }
 
@@ -163,7 +163,7 @@ resource "aws_iam_role_policy_attachment" "log_bucket_role_policy_attachment" {
   depends_on = [aws_cloudformation_stack_set_instance.permeate_account_policy]
   provider   = aws.log_bucket
   role       = var.expel_assume_role_name
-  policy_arn = aws_iam_policy.log_bucket_iam_policy.arn
+  policy_arn = aws_iam_policy.log_bucket_iam_policy[0].arn
 }
 
 resource "aws_iam_policy" "log_bucket_iam_policy" {
