@@ -85,5 +85,8 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - run:
+          name: rename tmp provide file
+          command: mv ./provider.tf.validate-fix ./provider.tf
       - terraform/fmt
       - terraform/validate
