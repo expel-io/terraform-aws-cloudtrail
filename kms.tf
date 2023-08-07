@@ -136,5 +136,3 @@ resource "aws_kms_key" "notification_encryption_key" {
   policy              = data.aws_iam_policy_document.notification_key_policy_document.json
   tags                = local.tags
 }
-
-
