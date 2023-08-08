@@ -35,8 +35,8 @@ The permissions allocated by this module allow Expel Workbench to perform invest
 ## Limitations
 
 - For existing cloudtrail with cross account resources deployment, this module only supports integrating with Expel when AWS organization is enabled. Additionally, if the cloudtrail log bucket is encrypted by an existing Customer Managed Key (CMK) that **does not** reside in the log bucket account, a new key policy needs to be added to the CMK that allows the `expel IAM role` created by the module in the log bucket account to perform `kms:Decrypt` action. Refer to [this guide](https://support.expel.io/hc/en-us/articles/12391858961171-AWS-CloudTrail-Existing-CloudTrail-with-Control-Tower-setup-for-Workbench#UUID-7931c0e3-f157-d464-2f19-fc51aaad5702_bridgehead-idm4579629317097633431279663831) for reference.
-
 Please contact your Engagement Manager if you have an existing CloudTrail with a different configuration.
+- For existing cloudtrail with cross account resources deployment, if you have an existing SNS topic configured as a notifier to the cloudtrail log bucket & the topic **does not** reside in the log bucket account, a new topic policy must be added that allows the log bucket account to perform `sns:Subscribe` action on the topic. Refer to [this aws documentation](https://docs.aws.amazon.com/sns/latest/dg/sns-send-message-to-sqs-cross-account.html) for details.
 
 <!-- begin-tf-docs -->
 ## Requirements
