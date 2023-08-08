@@ -62,7 +62,8 @@ module "expel_aws_cloudtrail_integration_x_account" {
   existing_cloudtrail_kms_key_arn           = var.existing_cloudtrail_kms_key_arn
   existing_sns_topic_arn                    = var.existing_sns_topic_arn
 
-  prefix = "expel-aws-cloudtrail-x-account"
+  prefix = "expel-aws-cloudtrail"
+
   tags = {
     "is_external" = "true",
     "x-account"   = "true"
