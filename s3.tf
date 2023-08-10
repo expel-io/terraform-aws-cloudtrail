@@ -121,7 +121,6 @@ resource "aws_s3_bucket_public_access_block" "cloudtrail_access_log_bucket_publi
   restrict_public_buckets = true
 }
 
-
 resource "aws_s3_bucket_notification" "cloudtrail_bucket_notification" {
   provider = aws.log_bucket
   count    = var.existing_sns_topic_arn == null ? 1 : 0

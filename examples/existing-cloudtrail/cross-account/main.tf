@@ -12,7 +12,7 @@ variable "existing_cloudtrail_bucket_name" {
   type        = string
 }
 
-variable "aws_mgmt_account_id" {
+variable "aws_management_account_id" {
   description = "Use your AWS management account id"
   type        = string
 }
@@ -56,7 +56,7 @@ module "expel_aws_cloudtrail_integration_x_account" {
 
   is_existing_cloudtrail_cross_account      = true
   expel_customer_organization_guid          = var.expel_customer_organization_guid
-  aws_mgmt_account_id                       = var.aws_mgmt_account_id
+  aws_management_account_id                 = var.aws_management_account_id
   existing_cloudtrail_log_bucket_account_id = var.existing_cloudtrail_log_bucket_account_id
   existing_cloudtrail_bucket_name           = var.existing_cloudtrail_bucket_name
   existing_cloudtrail_kms_key_arn           = var.existing_cloudtrail_kms_key_arn
