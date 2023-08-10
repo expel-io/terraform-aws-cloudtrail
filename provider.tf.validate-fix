@@ -1,9 +1,0 @@
-# There is a bug in terraform that fails validation for module with configuration_aliases
-# https://github.com/hashicorp/terraform/issues/28490
-# As a workaround, we create a temp provider file & rename it just before running `terraform validate`
-# https://github.com/hashicorp/terraform/issues/28490#issuecomment-1140007955
-
-provider "aws" {
-  region = "us-east-1"
-  alias  = "log_bucket"
-}

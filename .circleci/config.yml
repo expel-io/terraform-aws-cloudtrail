@@ -85,8 +85,13 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run:
-          name: rename temp provider file
-          command: mv ./provider.tf.validate-fix ./provider.tf
       - terraform/fmt
+      - run:
+          name: create temp provider file
+          command: |
+            cat > ./provider.tf
+              provider "aws" {
+                region = "us-east-1"
+                alias  = "log_bucket"
+              }
       - terraform/validate
