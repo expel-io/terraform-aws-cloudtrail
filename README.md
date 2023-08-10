@@ -50,8 +50,8 @@ Please contact your Engagement Manager if you have an existing CloudTrail with a
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_aws_management_account_id"></a> [aws\_mgmt\_account\_id](#input\_aws\_mgmt\_account\_id) | Account id of customer's AWS mgmt account. | `string` | n/a | yes |
-| <a name="input_existing_cloudtrail_log_bucket_account_id"></a> [existing\_cloudtrail\_log\_bucket\_account\_id](#input\_existing\_cloudtrail\_log\_bucket\_account\_id) | Account id of customer's AWS account where the existing cloudtrail log bucket is created. This is where the new SQS queue will be created | `string` | n/a | yes |
+| <a name="input_aws_management_account_id"></a> [aws\_management\_account\_id](#input\_aws\_management\_account\_id) | Account id of AWS management account. | `string` | n/a | yes |
+| <a name="input_existing_cloudtrail_log_bucket_account_id"></a> [existing\_cloudtrail\_log\_bucket\_account\_id](#input\_existing\_cloudtrail\_log\_bucket\_account\_id) | Account id of AWS account where the existing cloudtrail log bucket is created. This is where the new SQS queue will be created | `string` | n/a | yes |
 | <a name="input_expel_customer_organization_guid"></a> [expel\_customer\_organization\_guid](#input\_expel\_customer\_organization\_guid) | Expel customer's organization GUID assigned to you by Expel. You can find it in your browser URL after navigating to Settings > My Organization in Workbench. | `string` | n/a | yes |
 | <a name="input_enable_access_logging_bucket_encryption"></a> [enable\_access\_logging\_bucket\_encryption](#input\_enable\_access\_logging\_bucket\_encryption) | Enable to encrypt objects in the access logging bucket. | `bool` | `true` | no |
 | <a name="input_enable_bucket_access_logging"></a> [enable\_bucket\_access\_logging](#input\_enable\_bucket\_access\_logging) | Access logging provides detailed records for the requests that are made to an Amazon S3 bucket. | `bool` | `true` | no |

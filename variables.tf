@@ -59,7 +59,7 @@ variable "enable_organization_trail" {
 /* --- Set these variables to support CloudTrail configuration --- */
 
 variable "is_existing_cloudtrail_cross_account" {
-  description = "For an existing cloudtrail, whether the cloudtrail & the log bucket (& optinally log bucket notifier topic if existing) are in different aws accounts"
+  description = "For an existing cloudtrail, whether the cloudtrail & the log bucket (& optionally log bucket notifier topic if existing) are in different aws accounts"
   type        = bool
   default     = false
 }
