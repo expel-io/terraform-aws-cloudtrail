@@ -89,9 +89,10 @@ jobs:
       - run:
           name: create temp provider file
           command: |
-            cat > ./provider.tf
-              provider "aws" {
-                region = "us-east-1"
-                alias  = "log_bucket"
-              }
+            cat > provider.tf \<<EOF
+            provider "aws" {
+              region = "us-east-1"
+              alias  = "log_bucket"
+            }
+            EOF
       - terraform/validate
