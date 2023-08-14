@@ -72,6 +72,7 @@ variable "existing_cloudtrail_bucket_name" {
 variable "aws_management_account_id" {
   description = "Account id of AWS management account."
   type        = string
+  default     = null
   validation {
     condition     = var.aws_management_account_id == null || can(regex("^[0-9]{12}$", var.aws_management_account_id))
     error_message = "Account id must be 12 digits."
@@ -81,6 +82,7 @@ variable "aws_management_account_id" {
 variable "existing_cloudtrail_log_bucket_account_id" {
   description = "Account id of AWS account where the existing cloudtrail log bucket is created. This is where the new SQS queue will be created"
   type        = string
+  default     = null
   validation {
     condition     = var.existing_cloudtrail_log_bucket_account_id == null || can(regex("^[0-9]{12}$", var.existing_cloudtrail_log_bucket_account_id))
     error_message = "Account id must be 12 digits."
