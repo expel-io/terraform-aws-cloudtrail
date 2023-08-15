@@ -14,6 +14,10 @@ provider "aws" {
 module "expel_aws_cloudtrail_integration" {
   source = "../../"
 
+  providers = {
+    aws.log_bucket = aws //setting the log_bucket alias to default aws provider for new cloudtrail
+  }
+
   expel_customer_organization_guid = var.expel_customer_organization_guid
   expel_assume_role_session_name   = "ExpelServiceAssumeRoleForCloudTrailAccess"
   queue_message_retention_days     = 10

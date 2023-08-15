@@ -86,4 +86,17 @@ jobs:
       - attach_workspace:
           at: .
       - terraform/fmt
+      - run:
+          # There is a bug in terraform that fails validation for module with configuration configuration_aliases
+          # https://github.com/hashicorp/terraform/issues/28490
+          # As a workaround, we create a temp provider file before running `terraform validate`
+          # https://github.com/hashicorp/terraform/issues/28490#issuecomment-1140007955
+          name: create temp provider file
+          command: |
+            cat > provider.tf \<<EOF
+            provider "aws" {
+              region = "us-east-1"
+              alias  = "log_bucket"
+            }
+            EOF
       - terraform/validate

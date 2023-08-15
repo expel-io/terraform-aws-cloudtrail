@@ -1,6 +1,6 @@
 output "role_arn" {
   description = "IAM Role ARN of the role for Expel to assume to access CloudTrail data"
-  value       = aws_iam_role.expel_assume_role.arn
+  value       = var.is_existing_cloudtrail_cross_account ? "arn:aws:iam::${var.existing_cloudtrail_log_bucket_account_id}:role/${var.expel_assume_role_name}" : aws_iam_role.mgmt_expel_assume_role.arn
 }
 
 output "role_session_name" {
