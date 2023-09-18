@@ -155,3 +155,9 @@ variable "stackset_max_concurrent_count" {
   type        = number
   default     = 1
 }
+
+variable "stackset_target_organizational_units" {
+  description = "If the stackset is desired to be deployed to targeted OUs only, provide a list of OU ids. Please note that the OU that the trail log bucket account belongs to, must be included."
+  type        = list(string)
+  default     = null
+}
