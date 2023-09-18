@@ -76,6 +76,7 @@ Please contact your Engagement Manager if you have an existing CloudTrail with a
 | <a name="input_queue_message_retention_days"></a> [queue\_message\_retention\_days](#input\_queue\_message\_retention\_days) | The visibility timeout for the queue. See: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html | `number` | `7` | no |
 | <a name="input_stackset_fault_tolerance_count"></a> [stackset\_fault\_tolerance\_count](#input\_stackset\_fault\_tolerance\_count) | The number of accounts, per Region, for which stackset deployment operation can fail before AWS CloudFormation stops the operation in that Region. | `number` | `null` | no |
 | <a name="input_stackset_max_concurrent_count"></a> [stackset\_max\_concurrent\_count](#input\_stackset\_max\_concurrent\_count) | The maximum number of accounts in which to perform this operation at one time. At most, this should be set to one more than `stackset_fault_tolerance_count` | `number` | `1` | no |
+| <a name="input_stackset_target_organizational_units"></a> [stackset\_target\_organizational\_units](#input\_stackset\_target\_organizational\_units) | If the stackset is desired to be deployed to targeted OUs only, provide a list of OU ids. Please note that the OU that the trail log bucket account belongs to, must be included. | `list(string)` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A set of tags to group resources. | `map(string)` | `{}` | no |
 ## Outputs
 

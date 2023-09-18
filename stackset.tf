@@ -26,7 +26,7 @@ resource "aws_cloudformation_stack_set_instance" "permeate_account_policy" {
   count = local.create_stackset ? 1 : 0
 
   deployment_targets {
-    organizational_unit_ids = [local.customer_aws_organization_id]
+    organizational_unit_ids = local.stackset_organization_units
   }
 
   operation_preferences {
