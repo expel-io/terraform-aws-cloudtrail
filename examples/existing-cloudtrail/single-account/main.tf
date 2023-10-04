@@ -39,6 +39,7 @@ module "expel_aws_cloudtrail_integration" {
   existing_cloudtrail_bucket_name  = var.existing_cloudtrail_bucket_name
   existing_cloudtrail_kms_key_arn  = var.existing_cloudtrail_kms_key_arn
   existing_sns_topic_arn           = var.existing_sns_topic_arn
+  enable_organization_trail        = false
 
   prefix = "expel-aws-cloudtrail"
 

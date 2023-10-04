@@ -19,9 +19,10 @@ module "expel_aws_cloudtrail_integration" {
   }
 
   expel_customer_organization_guid = var.expel_customer_organization_guid
-  expel_assume_role_session_name   = "ExpelServiceAssumeRoleForCloudTrailAccess"
-  queue_message_retention_days     = 10
+  enable_organization_trail        = false
 
+  expel_assume_role_session_name          = "ExpelServiceAssumeRoleForCloudTrailAccess"
+  queue_message_retention_days            = 10
   enable_sqs_encryption                   = true
   enable_cloudtrail_log_file_validation   = true
   enable_bucket_access_logging            = true
