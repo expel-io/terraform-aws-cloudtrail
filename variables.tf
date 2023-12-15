@@ -95,6 +95,12 @@ variable "existing_cloudtrail_kms_key_arn" {
   default     = null
 }
 
+variable "existing_notification_kms_key_arn" {
+  description = "The ARN of the KMS key used to encrypt new SQS/SNS. If provided, please add key policy to enable IAM permission for the key from the log bucket account"
+  type        = string
+  default     = null
+}
+
 variable "existing_sns_topic_arn" {
   description = "The ARN of the existing SNS Topic configured to be notified by the existing CloudTrail bucket. The S3 bucket notification configuration must have the s3:ObjectCreated:* event type checked."
   type        = string

@@ -111,7 +111,7 @@ data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
     for_each = var.is_existing_cloudtrail_cross_account ? [] : [1]
     content {
       actions   = ["kms:Decrypt"]
-      resources = [aws_kms_key.notification_encryption_key.arn]
+      resources = [local.notification_encryption_key_arn]
       effect    = "Allow"
     }
   }
@@ -208,7 +208,7 @@ data "aws_iam_policy_document" "log_bucket_iam_document" {
   # Allow Expel Workbench to decrypt notifications
   statement {
     actions   = ["kms:Decrypt"]
-    resources = [aws_kms_key.notification_encryption_key.arn]
+    resources = [local.notification_encryption_key_arn]
     effect    = "Allow"
   }
 }
