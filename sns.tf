@@ -8,7 +8,7 @@ resource "aws_sns_topic" "cloudtrail_sns_topic" {
 
   name              = "${var.prefix}-${random_uuid.cloudtrail_sns_topic_name[0].result}"
   display_name      = "CloudTrail SNS Topic"
-  kms_master_key_id = aws_kms_key.notification_encryption_key.arn
+  kms_master_key_id = local.notification_encryption_key_arn
 }
 
 resource "aws_sns_topic_policy" "sns_topic_policy" {

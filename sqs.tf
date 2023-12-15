@@ -2,7 +2,7 @@ resource "aws_sqs_queue" "cloudtrail_queue" {
   provider                  = aws.log_bucket
   name                      = "${var.prefix}-queue"
   message_retention_seconds = var.queue_message_retention_days * 24 * 60 * 60
-  kms_master_key_id         = aws_kms_key.notification_encryption_key.arn
+  kms_master_key_id         = local.notification_encryption_key_arn
 
   tags = local.tags
 }

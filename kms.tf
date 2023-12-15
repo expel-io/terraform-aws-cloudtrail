@@ -85,6 +85,7 @@ resource "aws_kms_key" "cloudtrail_bucket_encryption_key" {
 }
 
 data "aws_iam_policy_document" "notification_key_policy_document" {
+  count = var.existing_notification_kms_key_arn == null ? 1 : 0
   statement {
     sid    = "Enable IAM User Permissions"
     effect = "Allow"
@@ -130,9 +131,10 @@ data "aws_iam_policy_document" "notification_key_policy_document" {
 }
 
 resource "aws_kms_key" "notification_encryption_key" {
+  count               = var.existing_notification_kms_key_arn == null ? 1 : 0
   provider            = aws.log_bucket
   description         = "This key is used to encrypt SNS topic & SQS queue."
   enable_key_rotation = var.enable_bucket_encryption_key_rotation
-  policy              = data.aws_iam_policy_document.notification_key_policy_document.json
+  policy              = data.aws_iam_policy_document.notification_key_policy_document[0].json
   tags                = local.tags
 }
