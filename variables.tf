@@ -96,7 +96,7 @@ variable "existing_cloudtrail_kms_key_arn" {
 }
 
 variable "existing_notification_kms_key_arn" {
-  description = "The ARN of the KMS key used to encrypt new SQS/SNS. If provided, please add key policy to enable IAM permission for the key from the log bucket account"
+  description = "The ARN of the KMS key used to encrypt new SQS/SNS. If provided, please add key policies to enable IAM permission for the account root, and allow `kms:GenerateDataKey` & `kms:Decrypt` actions to log bucket [principal:s3.amazonaws.com] & sns topic [principal:sns.amazonaws.com]."
   type        = string
   default     = null
 }
