@@ -47,9 +47,9 @@ Please contact your Engagement Manager if you have an existing CloudTrail with a
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0.0 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.1.3 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.1 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.7 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.1 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -66,7 +66,7 @@ Please contact your Engagement Manager if you have an existing CloudTrail with a
 | <a name="input_existing_cloudtrail_bucket_name"></a> [existing\_cloudtrail\_bucket\_name](#input\_existing\_cloudtrail\_bucket\_name) | The name of the existing bucket connected to the existing CloudTrail | `string` | `null` | no |
 | <a name="input_existing_cloudtrail_kms_key_arn"></a> [existing\_cloudtrail\_kms\_key\_arn](#input\_existing\_cloudtrail\_kms\_key\_arn) | The ARN of the KMS key used to encrypt existing CloudTrail bucket | `string` | `null` | no |
 | <a name="input_existing_cloudtrail_log_bucket_account_id"></a> [existing\_cloudtrail\_log\_bucket\_account\_id](#input\_existing\_cloudtrail\_log\_bucket\_account\_id) | Account id of AWS account where the existing cloudtrail log bucket is created. This is where the new SQS queue will be created | `string` | `null` | no |
-| <a name="input_existing_notification_kms_key_arn"></a> [existing\_notification\_kms\_key\_arn](#input\_existing\_notification\_kms\_key\_arn) | The ARN of the KMS key used to encrypt new SQS/SNS. If provided, please add key policy to enable IAM permission for the key from the log bucket account | `string` | `null` | no |
+| <a name="input_existing_notification_kms_key_arn"></a> [existing\_notification\_kms\_key\_arn](#input\_existing\_notification\_kms\_key\_arn) | The ARN of the KMS key used to encrypt new SQS/SNS. If provided, please add key policies to enable IAM permission for the account root, and allow `kms:GenerateDataKey` & `kms:Decrypt` actions to log bucket [principal:s3.amazonaws.com] & sns topic [principal:sns.amazonaws.com]. | `string` | `null` | no |
 | <a name="input_existing_sns_topic_arn"></a> [existing\_sns\_topic\_arn](#input\_existing\_sns\_topic\_arn) | The ARN of the existing SNS Topic configured to be notified by the existing CloudTrail bucket. The S3 bucket notification configuration must have the s3:ObjectCreated:* event type checked. | `string` | `null` | no |
 | <a name="input_expel_assume_role_name"></a> [expel\_assume\_role\_name](#input\_expel\_assume\_role\_name) | The role name Expel will assume when authenticating. | `string` | `"ExpelTrailAssumeRole"` | no |
 | <a name="input_expel_assume_role_session_name"></a> [expel\_assume\_role\_session\_name](#input\_expel\_assume\_role\_session\_name) | The session name Expel will use when authenticating. | `string` | `"ExpelCloudTrailServiceSession"` | no |
