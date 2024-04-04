@@ -1,14 +1,16 @@
+# This resource creates an S3 bucket policy for the CloudTrail bucket.
+# The policy is created only if an existing CloudTrail bucket name is not provided.
 resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
-  count = var.existing_cloudtrail_bucket_name == null ? 1 : 0
-
+  count  = var.existing_cloudtrail_bucket_name == null ? 1 : 0
   bucket = aws_s3_bucket.cloudtrail_bucket[0].bucket
   policy = data.aws_iam_policy_document.cloudtrail_bucket_iam_document[0].json
 }
 
+# This data block defines the IAM policy document for the CloudTrail bucket.
+# The policy allows the CloudTrail service to get the ACL of the bucket and put objects into the bucket.
 data "aws_iam_policy_document" "cloudtrail_bucket_iam_document" {
   count = var.existing_cloudtrail_bucket_name == null ? 1 : 0
 
-  # Necessary to allow any bucket permissions
   statement {
     actions   = ["s3:GetBucketAcl"]
     resources = [aws_s3_bucket.cloudtrail_bucket[0].arn]
@@ -19,7 +21,6 @@ data "aws_iam_policy_document" "cloudtrail_bucket_iam_document" {
     }
   }
 
-  # Allow Cloudtrail to store objects in S3 bucket
   statement {
     actions = ["s3:PutObject"]
     resources = [
@@ -33,8 +34,9 @@ data "aws_iam_policy_document" "cloudtrail_bucket_iam_document" {
   }
 }
 
+# This data block defines the IAM policy document that allows the Expel Workbench to assume a role.
+# The policy includes a condition that the sts:ExternalId must match the expel_customer_organization_guid.
 data "aws_iam_policy_document" "mgmt_assume_role_iam_document" {
-  # Allow Expel Workbench to decrypt cloudtrail bucket
   statement {
     actions = ["sts:AssumeRole"]
     effect  = "Allow"
@@ -42,7 +44,6 @@ data "aws_iam_policy_document" "mgmt_assume_role_iam_document" {
       type        = "AWS"
       identifiers = [var.expel_aws_user_arn]
     }
-
     condition {
       test     = "StringEquals"
       variable = "sts:ExternalId"
@@ -51,27 +52,28 @@ data "aws_iam_policy_document" "mgmt_assume_role_iam_document" {
   }
 }
 
+# This resource creates an IAM role with the policy defined in mgmt_assume_role_iam_document.
 resource "aws_iam_role" "mgmt_expel_assume_role" {
   name               = var.expel_assume_role_name
   assume_role_policy = data.aws_iam_policy_document.mgmt_assume_role_iam_document.json
-
-  tags = local.tags
+  tags               = local.tags
 }
 
+# This resource attaches the cloudtrail_manager_iam_policy to the mgmt_expel_assume_role.
 resource "aws_iam_role_policy_attachment" "cloudtrail_manager_role_policy_attachment" {
   role       = aws_iam_role.mgmt_expel_assume_role.name
   policy_arn = aws_iam_policy.cloudtrail_manager_iam_policy.arn
 }
 
+# This resource creates an IAM policy that allows the Expel Workbench to perform various actions.
 resource "aws_iam_policy" "cloudtrail_manager_iam_policy" {
   name   = "${var.prefix}-cloudtrail-manager-policy"
   policy = data.aws_iam_policy_document.cloudtrail_manager_iam_document.json
-
-  tags = local.tags
+  tags   = local.tags
 }
 
-# ignoring as these policies enable necessary observability on all AWS resources
-# tfsec:ignore:aws-iam-no-policy-wildcards
+# This data block defines the IAM policy document that allows the Expel Workbench to perform various actions.
+# The actions include getting objects from the CloudTrail bucket, receiving and deleting SQS messages, decrypting the CloudTrail bucket, and decrypting notifications.
 data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
   # Allow Expel Workbench to get objects from cloudtrail bucket
   dynamic "statement" {
@@ -115,49 +117,10 @@ data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
       effect    = "Allow"
     }
   }
-
-  # Note: This is a duplicate policy statement with CloudFormation StackSet "PermeateAccountPolicy"
-  # Allow Expel Workbench to gather information about AWS footprint
-  statement {
-    actions = [
-      "cloudtrail:DescribeTrails",
-      "cloudtrail:GetTrailStatus",
-      "cloudtrail:ListTrails",
-      "cloudtrail:GetTrail",
-      "config:GetDiscoveredResourceCounts",
-      "config:ListDiscoveredResources",
-      "ec2:DescribeInstances",
-      "ec2:DescribeRegions",
-      "ec2:DescribeSecurityGroups",
-      "ec2:DescribeVolumes",
-      "ecs:DescribeClusters",
-      "ecs:DescribeContainerInstances",
-      "ecs:DescribeTaskDefinition",
-      "ecs:ListClusters",
-      "ecs:ListContainerInstances",
-      "ecs:ListTaskDefinitions",
-      "eks:DescribeCluster",
-      "eks:ListClusters",
-      "iam:Get*",
-      "iam:List*",
-      "lambda:GetFunction",
-      "lambda:ListFunctions",
-      "lightsail:GetInstances",
-      "lightsail:GetRegions",
-      "organizations:DescribeOrganization",
-      "organizations:ListAccounts",
-      "rds:DescribeDBInstances",
-      "rds:ListTagsForResource",
-      "s3:ListAllMyBuckets",
-      "s3:GetBucketNotification",
-      "s3:GetEncryptionConfiguration"
-    ]
-    resources = ["*"]
-    effect    = "Allow"
-  }
 }
 
-# For existing trail with cross-account resources, deploy the expel role in log bucket account
+# This resource attaches the log_bucket_iam_policy to the expel_assume_role in the log bucket account.
+# This is used when there is an existing CloudTrail with cross-account resources.
 resource "aws_iam_role_policy_attachment" "log_bucket_role_policy_attachment" {
   count      = var.is_existing_cloudtrail_cross_account ? 1 : 0
   depends_on = [aws_cloudformation_stack_set_instance.permeate_account_policy]
@@ -166,17 +129,18 @@ resource "aws_iam_role_policy_attachment" "log_bucket_role_policy_attachment" {
   policy_arn = aws_iam_policy.log_bucket_iam_policy[0].arn
 }
 
+# This resource creates an IAM policy for the log bucket.
+# This is used when there is an existing CloudTrail with cross-account resources.
 resource "aws_iam_policy" "log_bucket_iam_policy" {
   count    = var.is_existing_cloudtrail_cross_account ? 1 : 0
   provider = aws.log_bucket
   name     = "${var.prefix}-log-bucket-policy"
   policy   = data.aws_iam_policy_document.log_bucket_iam_document.json
-
-  tags = local.tags
+  tags     = local.tags
 }
 
-# ignoring as these policies enable necessary observability on all AWS resources
-# tfsec:ignore:aws-iam-no-policy-wildcards
+# This data block defines the IAM policy document for the log bucket.
+# The policy allows the Expel Workbench to get objects from the CloudTrail bucket, receive and delete SQS messages, and decrypt the CloudTrail bucket and notifications.
 data "aws_iam_policy_document" "log_bucket_iam_document" {
   # Allow Expel Workbench to get objects from cloudtrail bucket
   statement {

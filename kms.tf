@@ -1,4 +1,7 @@
-# Key policies for cloudtrail key
+# This data block defines the IAM policy document for the KMS key used by CloudTrail.
+# The policy allows the root user of the customer's AWS account and the current caller to perform all KMS actions.
+# It also allows the CloudTrail service to generate data keys for encrypting logs and to describe the KMS key.
+# Additionally, it allows the S3 service to generate data keys and decrypt them for encrypting and decrypting logs in the CloudTrail bucket.
 data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
   count = var.existing_cloudtrail_bucket_name == null ? 1 : 0
 
@@ -75,6 +78,8 @@ data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
   }
 }
 
+# This resource creates a KMS key using the policy defined in cloudtrail_key_policy_document.
+# The key is used to encrypt the CloudTrail bucket.
 resource "aws_kms_key" "cloudtrail_bucket_encryption_key" {
   count = var.existing_cloudtrail_bucket_name == null ? 1 : 0
 
@@ -84,8 +89,13 @@ resource "aws_kms_key" "cloudtrail_bucket_encryption_key" {
   tags                = local.tags
 }
 
+# This data block defines the IAM policy document for the KMS key used by notifications.
+# The policy allows the root user of the customer's AWS account or the account that owns the existing CloudTrail log bucket to perform all KMS actions.
+# It also allows the S3 service to generate data keys and decrypt them for encrypting and decrypting logs in the CloudTrail bucket.
+# Additionally, it allows the SNS service to generate data keys and decrypt them for encrypting and decrypting notifications.
 data "aws_iam_policy_document" "notification_key_policy_document" {
   count = var.existing_notification_kms_key_arn == null ? 1 : 0
+
   statement {
     sid    = "Enable IAM User Permissions"
     effect = "Allow"
@@ -130,6 +140,8 @@ data "aws_iam_policy_document" "notification_key_policy_document" {
   }
 }
 
+# This resource creates a KMS key using the policy defined in notification_key_policy_document.
+# The key is used to encrypt SNS topics and SQS queues.
 resource "aws_kms_key" "notification_encryption_key" {
   count               = var.existing_notification_kms_key_arn == null ? 1 : 0
   provider            = aws.log_bucket

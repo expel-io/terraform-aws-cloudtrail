@@ -1,3 +1,6 @@
+# This Terraform configuration file sets up an integration between AWS CloudTrail and Expel for an existing CloudTrail infrastructure in a single AWS account.
+
+# Define input variables
 variable "region" {
   type = string
 }
@@ -24,15 +27,17 @@ variable "existing_sns_topic_arn" {
   default     = null
 }
 
+# Configure the AWS provider
 provider "aws" {
   region = var.region
 }
 
+# Create the Expel AWS CloudTrail integration module
 module "expel_aws_cloudtrail_integration" {
   source = "../../../"
 
   providers = {
-    aws.log_bucket = aws //setting the log_bucket alias to default aws provider for existing cloudtrail with resources in single account
+    aws.log_bucket = aws # setting the log_bucket alias to default aws provider for existing cloudtrail with resources in single account
   }
 
   expel_customer_organization_guid = var.expel_customer_organization_guid
@@ -48,6 +53,7 @@ module "expel_aws_cloudtrail_integration" {
   }
 }
 
+# Output the Expel AWS CloudTrail integration module
 output "expel_aws_cloudtrail_integration" {
   value = module.expel_aws_cloudtrail_integration
 }

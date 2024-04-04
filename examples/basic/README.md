@@ -1,24 +1,30 @@
-# Basic
+# Basic AWS CloudTrail Setup
 
-This configuration sets up appropriate AWS resources that are necessary to integrate Expel Workbench with a new AWS CloudTrail instance.
+This Terraform configuration sets up the necessary AWS resources for integrating Expel Workbench with a new AWS CloudTrail instance.
 
-This `Basic` example is the simplest onboarding experience, as it assumes a single AWS Account is being onboarded with a new CloudTrail entity.
+The `Basic` configuration is designed for a simple onboarding experience, assuming a single AWS Account is being onboarded with a new CloudTrail entity.
 
 ## Usage
 
+Follow these steps to deploy the configuration:
 
-To run this example you need to execute:
+1. Initialize Terraform in your working directory. This will download the necessary provider plugins.
+2. Apply the Terraform configuration. Ensure you have a `terraform.tfvars` file in your working directory with all the necessary variables:
 
-```bash
+```sh
 terraform init
 terraform apply -var-file="terraform.tfvars"
 ```
 
-Note that this example may create resources which can cost money (AWS S3 bucket, for example). Run `terraform destroy` when you don't need these resources.
+**Note**: This configuration may create resources that incur costs in AWS (such as an AWS S3 bucket). To avoid unnecessary charges, run the `terraform destroy` command to remove these resources when they are no longer needed.
 
-## Requirements
+## Prerequisites
 
-| Name | Version |
-|------|---------|
-| terraform | = 1.1.3 |
-| aws | = 4.0 |
+Ensure you have the following software installed on your machine:
+
+| Software | Version |
+|----------|---------|
+| Terraform | = 1.1.3 |
+| AWS Provider | = 4.0 |
+
+Refer to the official Terraform documentation and AWS Provider documentation for installation instructions.
