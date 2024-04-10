@@ -1,3 +1,6 @@
+# This Terraform file contains the variable definitions for the AWS CloudTrail module.
+#  It allows you to configure various settings related to the module's integration with Expel and CloudTrail.
+
 /* --- Set these to keep track of the effects of this module in your AWS infrastructure --- */
 variable "prefix" {
   description = "A prefix to group all Expel integration resources."
