@@ -8,6 +8,7 @@ variable "region" {
 }
 
 variable "expel_customer_organization_guid" {
+   description = "Use your organization GUID assigned to you by Expel. You can find it in your browser URL after navigating to Settings > My Organization in Workbench"
   type = string
 }
 
@@ -22,6 +23,7 @@ variable "aws_management_account_id" {
 }
 
 variable "existing_cloudtrail_log_bucket_account_id" {
+  description = "Use your AWS cloudtrail log bucket account id"
   type = string
 }
 
@@ -32,8 +34,9 @@ variable "existing_cloudtrail_kms_key_arn" {
 }
 
 variable "existing_sns_topic_arn" {
-  type    = string
-  default = null
+  description = "Use your AWS CloudTrail SNS Topic ARN"	  
+  type        = string	  
+  default     = null
 }
 
 # AWS provider
