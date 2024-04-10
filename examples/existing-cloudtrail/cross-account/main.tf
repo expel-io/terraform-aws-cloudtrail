@@ -1,4 +1,5 @@
-# This Terraform configuration file sets up an integration between Expel and an existing AWS CloudTrail in a cross-account scenario.
+# This Terraform configuration file sets up an integration between Expel and an 
+# existing AWS CloudTrail in a cross-account scenario.
 
 
 # Define input Variables
@@ -11,11 +12,13 @@ variable "expel_customer_organization_guid" {
 }
 
 variable "existing_cloudtrail_bucket_name" {
-  type = string
+  description = "Use your AWS CloudTrail S3 Bucket name"
+  type        = string
 }
 
 variable "aws_management_account_id" {
-  type = string
+  description = "Use your AWS management account id"
+  type        = string
 }
 
 variable "existing_cloudtrail_log_bucket_account_id" {
@@ -23,8 +26,9 @@ variable "existing_cloudtrail_log_bucket_account_id" {
 }
 
 variable "existing_cloudtrail_kms_key_arn" {
-  type    = string
-  default = null
+  description = "Use your AWS KMS Key ARN that is used for your CloudTrail infrastructure"
+  type        = string
+  default     = null
 }
 
 variable "existing_sns_topic_arn" {
@@ -62,6 +66,7 @@ module "expel_aws_cloudtrail_integration_x_account" {
   existing_cloudtrail_bucket_name           = var.existing_cloudtrail_bucket_name
   existing_cloudtrail_kms_key_arn           = var.existing_cloudtrail_kms_key_arn
   existing_sns_topic_arn                    = var.existing_sns_topic_arn
+
   prefix = "expel-aws-cloudtrail"
 
   tags = {
