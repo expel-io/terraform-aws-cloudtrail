@@ -4,6 +4,15 @@ This Terraform configuration sets up the necessary AWS resources for integrating
 
 The `Basic` configuration is designed for a simple onboarding experience, assuming a single AWS Account is being onboarded with a new CloudTrail entity.
 
+## Table of Contents
+
+- [Variables](#variables)
+- [Provider](#provider)
+- [Module](#module)
+- [Output](#output)
+- [Usage](#usage)
+- [Prerequisites](#prerequisites)
+
 ## Variables
 
 - `region`: The AWS region where the CloudTrail resources will be created.
