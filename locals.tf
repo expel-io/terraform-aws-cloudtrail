@@ -1,4 +1,6 @@
-# Fetch the current AWS region
+#  This Terraform file defines the local variables used in the AWS CloudTrail module.
+#  Note: This file is part of the terraform-aws-cloudtrail module.
+
 data "aws_region" "current" {}
 
 # Fetch the current AWS caller identity
