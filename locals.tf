@@ -24,10 +24,10 @@ locals {
 
   # Determine the customer AWS account ID
   customer_aws_account_id     = coalesce(var.expel_customer_aws_account_id, data.aws_caller_identity.current.account_id)
-  
+
   # Fetch the current AWS region name
   region                      = data.aws_region.current.name
-  
+
   # Determine the organizational units for the stackset
   stackset_organization_units = var.stackset_target_organizational_units != null ? var.stackset_target_organizational_units : [try(data.aws_organizations_organization.current[0].roots[0].id, "")]
 
@@ -35,7 +35,7 @@ locals {
   cloudtrail_bucket_arn                = var.existing_cloudtrail_bucket_name != null ? "arn:aws:s3:::${var.existing_cloudtrail_bucket_name}" : "arn:aws:s3:::${var.prefix}-${random_uuid.cloudtrail_bucket_name[0].result}"
   cloudtrail_bucket_name               = var.existing_cloudtrail_bucket_name != null ? var.existing_cloudtrail_bucket_name : "${var.prefix}-${random_uuid.cloudtrail_bucket_name[0].result}"
   cloudtrail_bucket_encryption_key_arn = var.existing_cloudtrail_bucket_name != null ? var.existing_cloudtrail_kms_key_arn : aws_kms_key.cloudtrail_bucket_encryption_key[0].arn
-  
+
   # Determine the encryption key ARN for notifications
   notification_encryption_key_arn      = var.existing_notification_kms_key_arn != null ? var.existing_notification_kms_key_arn : aws_kms_key.notification_encryption_key[0].arn
 
@@ -45,8 +45,8 @@ locals {
 
   # Determine whether to create a stackset
   create_stackset = (var.is_existing_cloudtrail_cross_account == true || var.enable_organization_trail == true) ? true : false
-  
-  # throw a runtime error if `is_existing_cloudtrail_cross_account` is set to `true` but other required variables are missing	
+
+  # throw a runtime error if `is_existing_cloudtrail_cross_account` is set to `true` but other required variables are missing
   # tflint-ignore: terraform_unused_declarations
   # Validate that all required variables are provided if `is_existing_cloudtrail_cross_account` is set to `true`
   validate_is_existing_cloudtrail_cross_account = (var.is_existing_cloudtrail_cross_account == true && (var.existing_cloudtrail_bucket_name == null || var.aws_management_account_id == null || var.existing_cloudtrail_log_bucket_account_id == null)) ? tobool("For existing cloudtrail with cross account resources, please pass in the log bucket name, log bucket account id & management account id") : true

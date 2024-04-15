@@ -1,4 +1,4 @@
-# This Terraform configuration file sets up an integration between Expel and an 
+# This Terraform configuration file sets up an integration between Expel and an
 # existing AWS CloudTrail in a cross-account scenario.
 
 
@@ -34,8 +34,8 @@ variable "existing_cloudtrail_kms_key_arn" {
 }
 
 variable "existing_sns_topic_arn" {
-  description = "Use your AWS CloudTrail SNS Topic ARN"	  
-  type        = string	  
+  description = "Use your AWS CloudTrail SNS Topic ARN"
+  type        = string
   default     = null
 }
 

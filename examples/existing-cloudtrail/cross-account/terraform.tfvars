@@ -1,7 +1,7 @@
-# This file contains the variable values for setting up an existing CloudTrail 
+# This file contains the variable values for setting up an existing CloudTrail
 # with cross-account notifications.
-# 
-# Replace the placeholder values with the appropriate values for 
+#
+# Replace the placeholder values with the appropriate values for
 # your environment.
 
 region                                    = "Replace with the AWS region in which you want the notification queue for CloudTrail to be set up"
