@@ -1,33 +1,71 @@
-# terraform-aws-cloudtrail
+# AWS CloudTrail Terraform Module
 
 Terraform module for configuring AWS to integrate with [Expel Workbench](https://workbench.expel.io/).
 
-Configures a CloudTrail stack (CloudTrail & S3 bucket) with a notification queue that
-[Expel Workbench](https://workbench.expel.io/) consumes. Cloudtrail, S3 bucket, SQS and SNS (optionally for existing Cloudtrail) queue are encrypted by default using a custom managed KMS key.
+This Terraform module creates an AWS CloudTrail resource. It Configures a CloudTrail stack (CloudTrail & S3 bucket) with a notification queue that [Expel Workbench](https://workbench.expel.io/) consumes. Cloudtrail, S3 bucket, SQS and SNS (optionally for existing Cloudtrail) queue are encrypted by default using a custom managed KMS key.
+
+## Table of Contents
+
+- [Features](#features)
+- [Usage](#usage)
+- [Nota Bene](#nota-bene)
+- [Examples](#examples)
+- [Permissions](#permissions)
+- [Use Cases](#use-cases)
+- [Limitations](#limitations)
+- [Requirements](#requirements)
+- [Inputs](#inputs)
+- [Outputs](#outputs)
+- [Resources](#resources)
+- [Contributing](/CONTRIBUTING.md)
+
+## Features
+
+- Conditionally creates a new CloudTrail resource based on the `existing_cloudtrail_bucket_name` variable.
+- Sets the name of the CloudTrail trail using the `prefix` variable.
+- Configures the trail to log events from all regions.
+- Optionally enables log file integrity validation based on the `enable_cloudtrail_log_file_validation` variable.
+- Specifies the ARN of the KMS key to use for encrypting the CloudTrail logs.
+- Includes all management events with "All" read/write type in the CloudTrail logs.
+- Ensures that the CloudTrail resource depends on the `cloudtrail_bucket_policy` resource, meaning that the bucket policy is applied before the CloudTrail is created.
+- Applies specified tags to the CloudTrail resource.
 
 ## Usage
 
-```hcl
+To use this module in your Terraform configuration, use the following syntax:
+
+```terraform
 module "expel_aws_cloudtrail" {
   source  = "expel-io/cloudtrail/aws"
   version = "2.0.0"
 
   providers = {
-    aws.log_bucket = aws //setting the log_bucket alias to default aws provider for new cloudtrail
+    aws.log_bucket = aws // Set the log_bucket alias to the default AWS provider for a new CloudTrail
   }
 
   expel_customer_organization_guid = "Replace with your organization GUID from Expel Workbench"
-  region = "AWS region in which notification queue for CloudTrail will be created"
+  region = "Replace with the AWS region in which the notification queue for CloudTrail will be created"
 }
 ```
 
-Once you have configured your AWS environment, go to
-https://workbench.expel.io/settings/security-devices?setupIntegration=aws and create an AWS CloudTrail
-security device to enable Expel to begin monitoring your AWS environment.
+## Nota Bene
+
+This module intentionally ignores certain configurations to maintain consistency with other methods of onboarding to AWS CloudTrail. Specifically, the rule `aws-cloudtrail-ensure-cloudwatch-integration`, which checks if CloudTrail logs are integrated with CloudWatch Logs, is being ignored.
+
+This decision is intentional, and users should be aware that this is not being implemented in this case. For more details, refer to the [relevant section in the main.tf file](/main.tf).
 
 ## Permissions
 
 The permissions allocated by this module allow Expel Workbench to perform investigations and get a broad understanding of your AWS footprint.
+
+## Examples
+
+You can find examples of how to use this module in the `examples` directory.
+
+- [Basic](examples/basic)
+- [Existing CloudTrail](examples/existing-cloudtrail)
+
+This directory contains an example of how to use this module with an existing CloudTrail.
 
 ## Use Cases
 
