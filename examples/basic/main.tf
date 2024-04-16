@@ -1,21 +1,24 @@
+# Variables
 variable "region" {
   type = string
 }
 
 variable "expel_customer_organization_guid" {
-  description = "Use your organization GUID assigned to you by Expel. You can find it in your browser URL after navigating to Settings > My Organization in Workbench"
+  description = "Expel organization GUID"
   type        = string
 }
 
+# AWS provider
 provider "aws" {
   region = var.region
 }
 
+# Expel AWS CloudTrail module
 module "expel_aws_cloudtrail_integration" {
   source = "../../"
 
   providers = {
-    aws.log_bucket = aws //setting the log_bucket alias to default aws provider for new cloudtrail
+    aws.log_bucket = aws # Default AWS provider for new CloudTrail
   }
 
   expel_customer_organization_guid = var.expel_customer_organization_guid
@@ -36,6 +39,7 @@ module "expel_aws_cloudtrail_integration" {
   }
 }
 
+# Output
 output "expel_aws_cloudtrail_integration" {
   value = module.expel_aws_cloudtrail_integration
 }

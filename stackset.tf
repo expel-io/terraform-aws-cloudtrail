@@ -1,3 +1,6 @@
+# This resource block defines an AWS CloudFormation Stack Set named "PermeateAccountPolicy".
+# It creates policies in all accounts of the organization for Expel to get basic read permissions of resources in order to investigate alerts.
+# The stack set is conditionally created based on the value of the local variable "create_stackset".
 resource "aws_cloudformation_stack_set" "permeate_account_policy" {
   count = local.create_stackset ? 1 : 0
 
@@ -21,7 +24,10 @@ resource "aws_cloudformation_stack_set" "permeate_account_policy" {
   tags = local.tags
 }
 
-
+# This resource block defines an AWS CloudFormation Stack Set Instance for the "PermeateAccountPolicy" stack set.
+# It specifies the deployment targets as organizational units defined in the local variable "stackset_organization_units".
+# The operation preferences are set based on the values of the variables "stackset_fault_tolerance_count" and "stackset_max_concurrent_count".
+# The region and stack set name are also specified.
 resource "aws_cloudformation_stack_set_instance" "permeate_account_policy" {
   count = local.create_stackset ? 1 : 0
 

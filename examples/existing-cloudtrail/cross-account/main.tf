@@ -1,10 +1,15 @@
+# This Terraform configuration file sets up an integration between Expel and an
+# existing AWS CloudTrail in a cross-account scenario.
+
+
+# Define input Variables
 variable "region" {
   type = string
 }
 
 variable "expel_customer_organization_guid" {
   description = "Use your organization GUID assigned to you by Expel. You can find it in your browser URL after navigating to Settings > My Organization in Workbench"
-  type        = string
+  type = string
 }
 
 variable "existing_cloudtrail_bucket_name" {
@@ -19,7 +24,7 @@ variable "aws_management_account_id" {
 
 variable "existing_cloudtrail_log_bucket_account_id" {
   description = "Use your AWS cloudtrail log bucket account id"
-  type        = string
+  type = string
 }
 
 variable "existing_cloudtrail_kms_key_arn" {
@@ -34,11 +39,13 @@ variable "existing_sns_topic_arn" {
   default     = null
 }
 
+# AWS provider
 provider "aws" {
   region  = "us-east-1"
   profile = "default"
 }
 
+# AWS provider for log bucket account
 provider "aws" {
   region = "us-east-1"
   alias  = "log_bucket"
@@ -47,11 +54,12 @@ provider "aws" {
   }
 }
 
+# Expel AWS CloudTrail module
 module "expel_aws_cloudtrail_integration_x_account" {
   source = "../../../"
 
   providers = {
-    aws.log_bucket = aws.log_bucket //setting the log_bucket alias to the log bucket aws provider for existing cloudtrail with resources in different accounts
+    aws.log_bucket = aws.log_bucket
   }
 
   is_existing_cloudtrail_cross_account      = true
@@ -70,6 +78,7 @@ module "expel_aws_cloudtrail_integration_x_account" {
   }
 }
 
+# Define output for Expel AWS CloudTrail integration in cross-account scenario
 output "expel_aws_cloudtrail_integration_x_account" {
   value = module.expel_aws_cloudtrail_integration_x_account
 }
