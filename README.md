@@ -13,11 +13,12 @@ This Terraform module creates an AWS CloudTrail resource. It Configures a CloudT
 - [Permissions](#permissions)
 - [Use Cases](#use-cases)
 - [Limitations](#limitations)
+- [Issues](#issues)
+- [Contributing](#contributing)
 - [Requirements](#requirements)
 - [Inputs](#inputs)
 - [Outputs](#outputs)
 - [Resources](#resources)
-- [Contributing](/CONTRIBUTING.md)
 
 ## Features
 
@@ -79,6 +80,22 @@ This directory contains an example of how to use this module with an existing Cl
 - For existing cloudtrail with cross account resources deployment, this module only supports integrating with Expel when [AWS Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html) is enabled. Additionally, if the cloudtrail log bucket is encrypted by an existing Customer Managed Key (CMK) that **does not** reside in the log bucket account, a new key policy needs to be added to the CMK that allows the `expel IAM role` created by the module in the log bucket account to perform `kms:Decrypt` action. Refer to [this guide](https://support.expel.io/hc/en-us/articles/12391858961171-AWS-CloudTrail-Existing-CloudTrail-with-Control-Tower-setup-for-Workbench#UUID-7931c0e3-f157-d464-2f19-fc51aaad5702_bridgehead-idm4579629317097633431279663831) for reference.
 Please contact your Engagement Manager if you have an existing CloudTrail with a different configuration.
 - For existing cloudtrail with cross account resources deployment, if you have an existing SNS topic configured as a notifier to the cloudtrail log bucket & the topic **does not** reside in the log bucket account, a new topic policy must be added that allows the log bucket account to perform `sns:Subscribe` action on the topic. Refer to [this aws documentation](https://docs.aws.amazon.com/sns/latest/dg/sns-send-message-to-sqs-cross-account.html) for details.
+
+## Issues
+
+Found a bug or have an idea for a new feature? Please [create an issue](https://github.com/expel-io/terraform-aws-cloudtrail/issues). We'll respond as soon as possible!
+
+## Contributing
+
+We welcome contributions! Here's how you can help:
+
+1. Fork the Project.
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`).
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`).
+4. Push to the Branch (`git push origin feature/AmazingFeature`).
+5. Open a Pull Request.
+
+Please read our [Contributing Code of Conduct](CONTRIBUTING.md) to get started.
 
 <!-- begin-tf-docs -->
 ## Requirements
