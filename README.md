@@ -83,7 +83,7 @@ Please contact your Engagement Manager if you have an existing CloudTrail with a
 
 ## Issues
 
-Found a bug or have an idea for a new feature? Please [create an issue](https://github.com/expel-io/terraform_azure_aks/issues). We'll respond as soon as possible!
+Found a bug or have an idea for a new feature? Please [create an issue](https://github.com/expel-io/terraform_aws_cloudtrail/issues). We'll respond as soon as possible!
 
 ## Contributing
 
