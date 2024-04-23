@@ -80,6 +80,7 @@ resource "aws_iam_policy" "cloudtrail_manager_iam_policy" {
 
 # This data block defines the IAM policy document that allows the Expel Workbench to perform various actions.
 # The actions include getting objects from the CloudTrail bucket, receiving and deleting SQS messages, decrypting the CloudTrail bucket, and decrypting notifications.
+#tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "cloudtrail_manager_iam_document" {
   # Allow Expel Workbench to get objects from cloudtrail bucket
   dynamic "statement" {
