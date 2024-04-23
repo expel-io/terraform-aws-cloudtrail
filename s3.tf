@@ -46,11 +46,12 @@ resource "aws_s3_bucket_logging" "cloudtrail_bucket_logging" {
 
   bucket        = aws_s3_bucket.cloudtrail_bucket[0].id
   target_bucket = aws_s3_bucket.cloudtrail_access_log_bucket[0].id
-
   target_prefix = "log/"
 }
 
 # The `aws_s3_bucket` resource creates the access log bucket for the CloudTrail bucket.
+# ignoring this rule since logging is enabled for the bucket
+#tfsec:ignore:aws-s3-enable-bucket-logging
 resource "aws_s3_bucket" "cloudtrail_access_log_bucket" {
   count = var.existing_cloudtrail_bucket_name == null && var.enable_bucket_access_logging ? 1 : 0
 
