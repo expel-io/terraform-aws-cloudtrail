@@ -1,3 +1,9 @@
+locals {
+  provisioner_role_arn         = var.assume_role_arn == null ? data.aws_caller_identity.current.arn : var.assume_role_arn
+  cloudtrail_key_policy_root   = var.is_existing_cloudtrail_cross_account == false ? "arn:aws:iam::${local.customer_aws_account_id}:root" : "arn:aws:iam::${var.existing_cloudtrail_log_bucket_account_id}:root"
+  notification_key_policy_root = var.is_existing_cloudtrail_cross_account == false ? "arn:aws:iam::${local.customer_aws_account_id}:root" : "arn:aws:iam::${var.existing_cloudtrail_log_bucket_account_id}:root"
+}
+
 # This data block defines the IAM policy document for the KMS key used by CloudTrail.
 # The policy allows the root user of the customer's AWS account and the current caller to perform all KMS actions.
 # It also allows the CloudTrail service to generate data keys for encrypting logs and to describe the KMS key.
@@ -9,11 +15,8 @@ data "aws_iam_policy_document" "cloudtrail_key_policy_document" {
     sid    = "Enable IAM User Permissions"
     effect = "Allow"
     principals {
-      type = "AWS"
-      identifiers = [
-        "arn:aws:iam::${local.customer_aws_account_id}:root",
-        data.aws_caller_identity.current.arn
-      ]
+      type        = "AWS"
+      identifiers = [local.cloudtrail_key_policy_root, local.provisioner_role_arn]
     }
     actions   = ["kms:*"]
     resources = ["*"]
@@ -101,7 +104,7 @@ data "aws_iam_policy_document" "notification_key_policy_document" {
     effect = "Allow"
     principals {
       type        = "AWS"
-      identifiers = var.is_existing_cloudtrail_cross_account == false ? ["arn:aws:iam::${local.customer_aws_account_id}:root"] : ["arn:aws:iam::${var.existing_cloudtrail_log_bucket_account_id}:root"]
+      identifiers = [local.notification_key_policy_root, local.provisioner_role_arn]
     }
     actions   = ["kms:*"]
     resources = ["*"]
