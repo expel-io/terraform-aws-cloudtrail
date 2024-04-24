@@ -60,6 +60,11 @@ variable "enable_organization_trail" {
 }
 
 /* --- Set these variables to support CloudTrail configuration --- */
+variable "assume_role_arn" {
+  type        = string
+  description = "ARN of the IAM role being assumed for resource creation"
+  default     = null
+}
 
 variable "is_existing_cloudtrail_cross_account" {
   description = "For an existing cloudtrail, whether the cloudtrail & the log bucket (& optionally log bucket notifier topic if existing) are in different aws accounts"
