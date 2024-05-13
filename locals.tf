@@ -6,6 +6,10 @@ data "aws_region" "current" {}
 # Fetch the current AWS caller identity
 data "aws_caller_identity" "current" {}
 
+# Fetch the source role of current caller if it is an STS assumed role
+data "aws_iam_session_context" "current_source_role" {
+  arn = data.aws_caller_identity.current.arn
+}
 # Fetch the current AWS organization if organization trail is enabled
 data "aws_organizations_organization" "current" {
   count = var.enable_organization_trail ? 1 : 0

@@ -1,6 +1,6 @@
 locals {
-  provisioner_role_arn         = var.assume_role_arn == null ? data.aws_caller_identity.current.arn : var.assume_role_arn
-  cloudtrail_key_policy_root   = var.is_existing_cloudtrail_cross_account == false ? "arn:aws:iam::${local.customer_aws_account_id}:root" : "arn:aws:iam::${var.existing_cloudtrail_log_bucket_account_id}:root"
+  provisioner_role_arn         = var.assume_role_arn == null ? data.aws_iam_session_context.current_source_role.issuer_arn : var.assume_role_arn
+  cloudtrail_key_policy_root   = "arn:aws:iam::${local.customer_aws_account_id}:root" #only used for new cloudtrails
   notification_key_policy_root = var.is_existing_cloudtrail_cross_account == false ? "arn:aws:iam::${local.customer_aws_account_id}:root" : "arn:aws:iam::${var.existing_cloudtrail_log_bucket_account_id}:root"
 }
 
