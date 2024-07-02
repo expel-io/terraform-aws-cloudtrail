@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = ">= 5.0"
       # For new & existing cloudtrail with resources in single aws account, set the log_bucket alias to default aws provider.
       # For existing cloudtrail with resources in different aws accounts, create an aws provider for the log_bucket account & pass it's alias.
       # See examples for reference.
@@ -11,8 +11,8 @@ terraform {
 
     random = {
       source  = "hashicorp/random"
-      version = "~> 3.6"
+      version = ">= 3.6"
     }
   }
-  required_version = "~> 1.1"
+  required_version = ">= 1.1"
 }
