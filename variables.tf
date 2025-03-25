@@ -38,7 +38,7 @@ variable "expel_customer_aws_account_id" {
 variable "expel_aws_user_arn" {
   description = "Expel's AWS User ARN to allow assuming role to gain CloudTrail access."
   type        = string
-  default     = "arn:aws:iam::012205512454:user/ExpelCloudService"
+  default     = "arn:aws:iam::012205512454:role/ExpelCloudService"
 }
 
 variable "expel_assume_role_name" {
