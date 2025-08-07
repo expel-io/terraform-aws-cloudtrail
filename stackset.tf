@@ -22,6 +22,11 @@ resource "aws_cloudformation_stack_set" "permeate_account_policy" {
   template_body = local.stackset_template
 
   tags = local.tags
+
+  # See https://github.com/hashicorp/terraform-provider-aws/issues/23464
+  lifecycle {
+    ignore_changes = [administration_role_arn]
+  }
 }
 
 # This resource block defines an AWS CloudFormation Stack Set Instance for the "PermeateAccountPolicy" stack set.
